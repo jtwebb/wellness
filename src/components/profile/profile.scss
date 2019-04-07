@@ -16,4 +16,14 @@
     img.user-image {
         background: $white;
     }
+
+    .weight-suggestion {
+        background: $primary;
+        color: $white;
+        margin-bottom: 20px;
+
+        .card-title {
+            font-weight: 600;
+        }
+    }
 }

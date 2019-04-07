@@ -1,0 +1,16 @@
+.calculators-page {
+    padding-bottom: 40px;
+    padding-top: 40px;
+
+    .card.current {
+        margin-bottom: 20px;
+    }
+
+    .btn.btn-block {
+        margin-bottom: 20px;
+
+        & + div {
+            margin-top: -20px;
+        }
+    }
+}

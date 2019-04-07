@@ -1,10 +1,21 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Alert, Col, Container, Nav, NavItem, NavLink, Row, TabContent, Table, TabPane } from 'reactstrap';
-import FormComponent from '../form/form';
 import ActivityFactorComponent from '../activityFactor/activityFactor';
+import FormComponent from '../form/form';
+import React from 'react';
+import {
+    Alert,
+    Col,
+    Container,
+    Nav,
+    NavItem,
+    NavLink,
+    Row,
+    TabContent,
+    Table,
+    TabPane
+} from 'reactstrap';
 import { AVERAGE, CUNNINGHAM, HARRIS_BENEDICT, KATCH_MCARDLE, MIFFLIN_ST_JEOR } from '../../redux/userReducer';
-import { average, cunningham, harrisBenedict, katchMcardle, mifflinStJeor } from '../../utils/bmrCalculators';
+import { getAll } from '../../utils/bmrCalculators';
+import { connect } from 'react-redux';
 
 import './bmr.scss';
 
@@ -24,23 +35,7 @@ export class BmrComponent extends React.PureComponent {
     };
 
     results = () => {
-        let calculatorsUsed = 2;
-        const results = {
-            [HARRIS_BENEDICT]: harrisBenedict(this.props.unitOfMeasure, this.props.weight, this.props.height, this.props.age, this.props.gender),
-            [MIFFLIN_ST_JEOR]: mifflinStJeor(this.props.unitOfMeasure, this.props.weight, this.props.height, this.props.age, this.props.gender)
-        };
-        let total = results[HARRIS_BENEDICT].base.value + results[MIFFLIN_ST_JEOR].base.value;
-
-        if (this.props.bodyFatPercentage) {
-            calculatorsUsed = 4;
-            results[KATCH_MCARDLE] = katchMcardle(this.props.unitOfMeasure, this.props.weight, this.props.bodyFatPercentage);
-            results[CUNNINGHAM] = cunningham(this.props.unitOfMeasure, this.props.weight, this.props.bodyFatPercentage);
-            total += results[KATCH_MCARDLE].base.value + results[MIFFLIN_ST_JEOR].base.value;
-        }
-
-        results[AVERAGE] = average(total, calculatorsUsed);
-
-        return results;
+        return getAll(this.props);
     };
 
     renderCalculatorResults = (calc) => {
@@ -120,7 +115,7 @@ export class BmrComponent extends React.PureComponent {
                 <Row>
                     <Col md={3} lg={2}>
                         <ActivityFactorComponent/>
-                        <FormComponent current showage showheight showweight showbodyFatPercentage showgender showactivityFactor/>
+                        <FormComponent current showTitle showage showheight showweight showbodyFatPercentage showgender showactivityFactor/>
                     </Col>
                     <Col md={9} lg={10}>
                         {this.renderResults()}
@@ -138,14 +133,11 @@ const mapStateToProps = (state) => {
         bodyFatPercentage: state.user.bodyFatPercentage,
         gender: state.user.gender,
         height: state.user.height,
+        idealBodyFatPercentage: state.user.idealBodyFatPercentage,
         preferredCalculator: state.user.preferredCalculator,
         unitOfMeasure: state.user.unitOfMeasure,
         weight: state.user.weight
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(BmrComponent);
+export default connect(mapStateToProps)(BmrComponent);

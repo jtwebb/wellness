@@ -25,7 +25,6 @@ export default createSlice({
         age: 0,
         bodyFatPercentage: 0,
         email: '',
-        exerciseCalories: 0,
         fatLossPerWeek: 1,
         gender: MALE,
         goalDate: Date.now(),
@@ -41,7 +40,8 @@ export default createSlice({
     },
     reducers: {
         updateUserProfile(state, action) {
-            const newState = {...state, [action.payload.key]: isNaN(parseFloat(action.payload.value)) ? action.payload.value : parseFloat(action.payload.value)};
+            const raw = isNaN(parseFloat(action.payload.value)) || action.payload.key === 'goalDate';
+            const newState = {...state, [action.payload.key]: raw ? action.payload.value : parseFloat(action.payload.value)};
             saveData(newState);
             return newState;
         }

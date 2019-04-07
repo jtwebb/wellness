@@ -59,9 +59,9 @@ export class FormComponent extends React.PureComponent {
 
                     return (
                         <div key={group.groupName}>
-                            <Card>
+                            <Card className={group.groupId}>
                                 <CardBody>
-                                    <CardTitle>{group.groupName}</CardTitle>
+                                    {this.props.showTitle && <CardTitle>{group.groupName}</CardTitle>}
                                     {group.fields.map(this.renderField)}
                                 </CardBody>
                             </Card>
@@ -79,7 +79,6 @@ const mapStateToProps = (state) => {
         age: state.user.age,
         bodyFatPercentage: state.user.bodyFatPercentage,
         email: state.user.email,
-        exerciseCalories: state.user.exerciseCalories,
         fatLossPerWeek: state.user.fatLossPerWeek,
         gender: state.user.gender,
         goalDate: state.user.goalDate,

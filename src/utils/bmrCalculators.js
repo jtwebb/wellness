@@ -1,5 +1,17 @@
 import { convertToCentimeters, convertToKilograms } from './conversion';
-import { EXTREMELY_ACTIVE, IMPERIAL, LIGHT, MALE, MODERATE, SEDENTARY, VERY_ACTIVE } from '../redux/userReducer';
+import {
+    AVERAGE,
+    CUNNINGHAM,
+    EXTREMELY_ACTIVE,
+    HARRIS_BENEDICT,
+    IMPERIAL, KATCH_MCARDLE,
+    LIGHT,
+    MALE,
+    MIFFLIN_ST_JEOR,
+    MODERATE,
+    SEDENTARY,
+    VERY_ACTIVE
+} from '../redux/userReducer';
 
 export const harrisBenedict = (unit, weight, height, age, gender) => {
     const adjustedWeight = unit === IMPERIAL ? convertToKilograms(weight) : weight;
@@ -45,6 +57,26 @@ export const cunningham = (unit, weight, bodyFatPercentage) => {
 
 export const average = (total, calculatorsUsed) => {
     return addActivityFactors(total / calculatorsUsed);
+};
+
+export const getAll = (user) => {
+    let calculatorsUsed = 2;
+    const results = {
+        [HARRIS_BENEDICT]: harrisBenedict(user.unitOfMeasure, user.weight, user.height, user.age, user.gender),
+        [MIFFLIN_ST_JEOR]: mifflinStJeor(user.unitOfMeasure, user.weight, user.height, user.age, user.gender)
+    };
+    let total = results[HARRIS_BENEDICT].base.value + results[MIFFLIN_ST_JEOR].base.value;
+
+    if (user.bodyFatPercentage) {
+        calculatorsUsed = 4;
+        results[KATCH_MCARDLE] = katchMcardle(user.unitOfMeasure, user.weight, user.bodyFatPercentage);
+        results[CUNNINGHAM] = cunningham(user.unitOfMeasure, user.weight, user.bodyFatPercentage);
+        total += results[KATCH_MCARDLE].base.value + results[MIFFLIN_ST_JEOR].base.value;
+    }
+
+    results[AVERAGE] = average(total, calculatorsUsed);
+
+    return results;
 };
 
 const addActivityFactors = (base) => {
