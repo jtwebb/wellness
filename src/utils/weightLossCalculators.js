@@ -3,7 +3,7 @@ import { IMPERIAL } from '../redux/userReducer';
 import { convertToPounds } from './conversion';
 
 export const poundsPerWeek = (user) => {
-    if (!user.weight || !user.idealWeight) {
+    if (!user.weight || !user.idealWeight || !user.fatLossPerWeek) {
         return false;
     }
 

@@ -5,7 +5,7 @@ import moment from 'moment';
 
 export default class CalculatorComponent extends React.PureComponent {
     render() {
-        if (!this.props.calculatorResults || !this.props.calculatorResults.weeks || this.props.calculatorResults.weeks.length) {
+        if (!this.props.calculatorResults || !this.props.calculatorResults.weeks || !this.props.calculatorResults.weeks.length) {
             return <Alert color={`danger`}>Please enter your data</Alert>;
         }
 
