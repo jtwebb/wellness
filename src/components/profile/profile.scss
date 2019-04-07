@@ -1,0 +1,19 @@
+@import "../../styles/variables";
+@import "../../styles/icons";
+
+.profile {
+    padding-top: 40px;
+    padding-bottom: 40px;
+
+    div.user-image {
+        background: $gray-400 url($person-icon) no-repeat center center;
+        background-size: ($profile-image-size * .75) ($profile-image-size * .75);
+        display: flex;
+        height: $profile-image-size;
+        width: 100%;
+    }
+
+    img.user-image {
+        background: $white;
+    }
+}
