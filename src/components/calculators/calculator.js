@@ -1,10 +1,14 @@
 import React from 'react';
-import { Card, CardBody, CardText, CardTitle, Table } from 'reactstrap';
+import { Alert, Card, CardBody, CardText, CardTitle, Table } from 'reactstrap';
 import { IMPERIAL } from '../../redux/userReducer';
 import moment from 'moment';
 
 export default class CalculatorComponent extends React.PureComponent {
     render() {
+        if (!this.props.calculatorResults || !this.props.calculatorResults.weeks || this.props.calculatorResults.weeks.length) {
+            return <Alert color={`danger`}>Please enter your data</Alert>;
+        }
+
         const date = moment(Date.now());
 
         return (

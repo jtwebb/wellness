@@ -36,8 +36,8 @@ export class CalculatorsComponent extends React.PureComponent {
 
     renderForm = () => {
         return ([
-            <Button block color={`primary`} onClick={this.onCurrentInformationToggle}>Current Information</Button>,
-            <Collapse isOpen={this.state.currentInformationIsOpen}>
+            <Button key={1} block color={`primary`} onClick={this.onCurrentInformationToggle}>Current Information</Button>,
+            <Collapse key={2} isOpen={this.state.currentInformationIsOpen}>
                 <FormComponent
                     key={`current`}
                     current
@@ -50,8 +50,8 @@ export class CalculatorsComponent extends React.PureComponent {
                     showactivityFactor
                 />
             </Collapse>,
-            <Button block color={`primary`} onClick={this.onGoalInformationToggle}>Goal Information</Button>,
-            <Collapse isOpen={this.state.goalInformationIsOpen}>
+            <Button key={3} block color={`primary`} onClick={this.onGoalInformationToggle}>Goal Information</Button>,
+            <Collapse key={4} isOpen={this.state.goalInformationIsOpen}>
                 <FormComponent
                     key={`goal`}
                     goal
