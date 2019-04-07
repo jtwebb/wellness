@@ -18,6 +18,7 @@ import {
 export const getForm = (unit) => {
     return [
         {
+            groupId: 'current',
             groupName: 'Current Information',
             fields: [
                 {
@@ -87,6 +88,7 @@ export const getForm = (unit) => {
             ]
         },
         {
+            groupId: 'goal',
             groupName: 'Goal Information',
             fields: [
                 {

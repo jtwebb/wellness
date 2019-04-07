@@ -41,7 +41,7 @@ export default createSlice({
     },
     reducers: {
         updateUserProfile(state, action) {
-            const newState = {...state, [action.payload.key]: action.payload.value};
+            const newState = {...state, [action.payload.key]: isNaN(parseFloat(action.payload.value)) ? action.payload.value : parseFloat(action.payload.value)};
             saveData(newState);
             return newState;
         }

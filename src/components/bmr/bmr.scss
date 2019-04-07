@@ -1,0 +1,18 @@
+@import "../../styles/variables";
+
+.bmr-page {
+    padding-bottom: 40px;
+    padding-top: 40px;
+
+    .nav-item {
+        cursor: pointer;
+    }
+
+    .nav-item.success a {
+        color: $success;
+    }
+
+    .tab-pane .alert-danger {
+        margin-top: 30px;
+    }
+}

@@ -1,91 +1,24 @@
+import FormComponent from '../form/form';
 import React from 'react';
-import { Card, CardBody, CardTitle, Col, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import { Col, Container, Row } from 'reactstrap';
 import { connect } from 'react-redux';
-import { getForm } from './form';
-import userReducer  from '../../redux/userReducer';
 
 import './profile.scss';
 
 export class ProfileComponent extends React.PureComponent {
-    updateUser = (key, e) => {
-        this.props.updateUserProfile(key, e.target.value);
-    };
-
-    /**
-     * Renders a field on the form
-     *
-     * @param field
-     * @returns {*}
-     */
-    renderField = (field) => {
-        const {display, key, type, ...extra} = field;
-
-        if (type !== 'select') {
-            return (
-                <FormGroup key={key}>
-                    <Label for={key}>{display}</Label>
-                    <Input
-                        onChange={this.updateUser.bind(this, key)}
-                        type={type}
-                        name={key}
-                        id={key}
-                        placeholder={display}
-                        defaultValue={this.props[key]} {...extra}
-                    />
-                </FormGroup>
-            );
-        }
-
-        const {options, ...props} = extra;
-        return (
-            <FormGroup key={key}>
-                <Label for={key}>{display}</Label>
-                <Input onChange={this.updateUser.bind(this, key)} type={type} name={key} id={key} defaultValue={this.props[key]} {...props}>
-                    {options.map((option) => {
-                        return <option key={option.value} value={option.value}>{option.display}</option>;
-                    })}
-                </Input>
-            </FormGroup>
-        );
-    };
-
-    /**
-     * Renders the profile form
-     *
-     * @returns {*}
-     */
-    renderForm = () => {
-        const form = getForm(this.props.unitOfMeasure);
-
-        return form.map((group) => {
-            return (
-                <Col md={6} key={group.groupName}>
-                    <Card>
-                        <CardBody>
-                            <CardTitle>{group.groupName}</CardTitle>
-                            {group.fields.map(this.renderField)}
-                        </CardBody>
-                    </Card>
-                </Col>
-            );
-        });
-    };
-
-    /**
-     * Renders the page
-     *
-     * @returns {*}
-     */
     render() {
         return (
             <Container className={`profile`}>
                 <Row>
                     <Col>
-                        <Form>
-                            <Row>
-                                {this.renderForm()}
-                            </Row>
-                        </Form>
+                        <Row>
+                            <Col md={6}>
+                                <FormComponent current allFields/>
+                            </Col>
+                            <Col md={6}>
+                                <FormComponent goal allFields/>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </Container>
@@ -115,12 +48,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        updateUserProfile: (key, value) => {
-            return dispatch(userReducer.actions.updateUserProfile({key, value}));
-        }
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileComponent);
+export default connect(mapStateToProps)(ProfileComponent);
