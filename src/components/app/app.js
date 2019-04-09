@@ -5,7 +5,7 @@ import Header from '../header/header';
 import Bmr from '../bmr/bmr';
 import Calculators from '../calculators/calculators';
 
-class App extends Component {
+export default class App extends Component {
     render() {
         return (
             <Router>
@@ -19,5 +19,3 @@ class App extends Component {
         );
     }
 }
-
-export default App;

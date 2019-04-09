@@ -10,14 +10,14 @@ export class WeightSuggestionComponent extends React.PureComponent {
     renderSuggestion() {
         if (!this.props.bodyFatPercentage || !this.props.weight || !this.props.idealBodyFatPercentage) {
             return (
-                <Alert color={`danger`}>
+                <Alert color={`danger`} className={`suggestion-error`}>
                     To calculate this you need to provide your current weight, current body fat percentage and ideal body fat percentage.
                 </Alert>
             );
         }
 
         return (
-            <div>
+            <div className={`suggestion-body`}>
                 <p>Current lean body mass: {this.getLeanBodyMass().toFixed(2)}</p>
                 <p>Current fat mass: {(this.props.weight - this.getLeanBodyMass()).toFixed(2)}</p>
                 <p>
@@ -40,6 +40,7 @@ export class WeightSuggestionComponent extends React.PureComponent {
     };
 }
 
+/* istanbul ignore next */
 const mapStateToProps = (state) => {
     return {
         bodyFatPercentage: state.user.bodyFatPercentage,
@@ -48,8 +49,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(WeightSuggestionComponent);
+export default connect(mapStateToProps)(WeightSuggestionComponent);

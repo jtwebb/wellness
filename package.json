@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.12.1",
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "react": "^16.8.6",
@@ -11,6 +13,7 @@
     "react-redux": "^6.0.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
+    "react-test-renderer": "^16.8.6",
     "reactstrap": "^8.0.0",
     "redux": "^4.0.1",
     "redux-starter-kit": "^0.4.3",
@@ -24,6 +27,17 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/src/serviceWorker.js",
+      "!<rootDir>/src/index.js",
+      "!<rootDir>/src/redux/configureStore.js",
+      "!<rootDir>/src/redux/reducers.js",
+      "!<rootDir>/src/utils/md5.js"
+    ]
   },
   "browserslist": [
     ">0.2%",

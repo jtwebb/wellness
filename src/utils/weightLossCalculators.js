@@ -9,18 +9,22 @@ export const poundsPerWeek = (user) => {
 
     const weeks = [];
     let updatedUser = {...user};
+    let bmr = 0;
 
     while (updatedUser.weight > user.idealWeight) {
         updatedUser = {...updatedUser, weight: updatedUser.weight - user.fatLossPerWeek};
+        const results = caloriesToBurn(updatedUser, user.fatLossPerWeek);
+        bmr += results.bmr;
         weeks.push({
-            caloriesToBurn: caloriesToBurn(updatedUser, user.fatLossPerWeek),
-            weightAtEndOfWeek: updatedUser.weight
+            caloriesToBurn: results.calories,
+            weightAtEndOfWeek: +updatedUser.weight.toFixed(2)
         });
     }
 
     return {
-        dailyCalorieDeficit: getCaloriesForFatLoss(user.fatLossPerWeek, user.unitOfMeasure) / 7,
-        weeks
+        dailyCalorieDeficit: +(getCaloriesForFatLoss(user.fatLossPerWeek, user.unitOfMeasure) / 7).toFixed(2),
+        weeks,
+        averageBmr: +(bmr / weeks.length).toFixed(2)
     };
 };
 
@@ -35,19 +39,23 @@ export const byGoalDate = (user) => {
     const daysToLose = Math.round((new Date(user.goalDate) - Date.now()) / (1000 * 60 * 60 * 24));
     const weeksToLose = daysToLose / 7;
     const weightPerWeek = weightToLose / weeksToLose;
+    let bmr = 0;
 
     for (let i = 0; i < weeksToLose; i++) {
         updatedUser = {...updatedUser, weight: updatedUser.weight - weightPerWeek};
+        const results = caloriesToBurn(updatedUser, weightPerWeek);
+        bmr += results.bmr;
         weeks.push({
-            caloriesToBurn: caloriesToBurn(updatedUser, weightPerWeek),
-            weightAtEndOfWeek: updatedUser.weight
+            caloriesToBurn: results.calories,
+            weightAtEndOfWeek: +updatedUser.weight.toFixed(2)
         });
     }
 
     return {
-        dailyCalorieDeficit: getCaloriesForFatLoss(weightPerWeek, user.unitOfMeasure) / 7,
+        dailyCalorieDeficit: +(getCaloriesForFatLoss(weightPerWeek, user.unitOfMeasure) / 7).toFixed(2),
         weightPerWeek,
-        weeks
+        weeks,
+        averageBmr: +(bmr / weeks.length).toFixed(2)
     };
 };
 
@@ -58,30 +66,35 @@ export const byPercentage = (user) => {
 
     const weeks = [];
     let updatedUser = {...user};
+    let bmr = 0;
 
     while (updatedUser.weight > user.idealWeight && user.percentLossPerWeek > 0) {
         const weightToLose = updatedUser.weight * (user.percentLossPerWeek / 100);
         updatedUser = {...updatedUser, weight: updatedUser.weight - weightToLose};
+        const results = caloriesToBurn(updatedUser, weightToLose);
+        bmr += results.bmr;
+
         weeks.push({
-            caloriesToBurn: caloriesToBurn(updatedUser, weightToLose),
-            weightAtEndOfWeek: updatedUser.weight,
-            weightLost: weightToLose
+            caloriesToBurn: results.calories,
+            weightAtEndOfWeek: +updatedUser.weight.toFixed(2),
+            weightLost: +weightToLose.toFixed(2)
         });
     }
 
     return {
-        weeks
+        weeks,
+        averageBmr: +(bmr / weeks.length).toFixed(2)
     };
 };
 
-const caloriesToBurn = (user, weightPerWeek) => {
+export const caloriesToBurn = (user, weightPerWeek) => {
     const bmr = getAll(user)[user.preferredCalculator];
     const goalDailyCalorieDeficit = getCaloriesForFatLoss(weightPerWeek, user.unitOfMeasure) / 7;
     const dailyCalorieIntake = bmr[user.activityFactor].value - goalDailyCalorieDeficit;
 
-    return user.lowestCalorieIntake - dailyCalorieIntake;
+    return {bmr: bmr[user.activityFactor].value, calories: +(user.lowestCalorieIntake - dailyCalorieIntake).toFixed(2)};
 };
 
-const getCaloriesForFatLoss = (fatLossPerWeek, unit) => {
-    return unit === IMPERIAL ? fatLossPerWeek * 3500 : convertToPounds(fatLossPerWeek) * 3500;
+export const getCaloriesForFatLoss = (fatLossPerWeek, unit) => {
+    return +(unit === IMPERIAL ? fatLossPerWeek * 3500 : convertToPounds(fatLossPerWeek) * 3500).toFixed(2);
 };

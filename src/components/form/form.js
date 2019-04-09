@@ -1,10 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { CardBody, Form, FormGroup, Input, Label } from 'reactstrap';
-import { getForm } from './form-data';
+import { Card, CardBody, CardTitle, Form, FormGroup, Input, Label } from 'reactstrap';
+import { getForm } from './formData';
 import userReducer from '../../redux/userReducer';
-import Card from 'reactstrap/es/Card';
-import CardTitle from 'reactstrap/es/CardTitle';
 
 export class FormComponent extends React.PureComponent {
     updateUser = (key, e) => {
@@ -51,14 +49,14 @@ export class FormComponent extends React.PureComponent {
         const form = getForm(this.props.unitOfMeasure);
 
         return (
-            <Form>
+            <Form className={`user-form`}>
                 {form.map((group) => {
                     if (!this.props.allGroups && !this.props[group.groupId]) {
                         return null;
                     }
 
                     return (
-                        <div key={group.groupName}>
+                        <div className={`group-${group.groupId}`} key={group.groupName}>
                             <Card className={group.groupId}>
                                 <CardBody>
                                     {this.props.showTitle && <CardTitle>{group.groupName}</CardTitle>}
@@ -73,6 +71,7 @@ export class FormComponent extends React.PureComponent {
     };
 }
 
+/* istanbul ignore next */
 const mapStateToProps = (state) => {
     return {
         activityFactor: state.user.activityFactor,
@@ -94,6 +93,7 @@ const mapStateToProps = (state) => {
     };
 };
 
+/* istanbul ignore next */
 const mapDispatchToProps = (dispatch) => {
     return {
         updateUserProfile: (key, value) => {

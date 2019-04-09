@@ -36,7 +36,7 @@ export class CalculatorsComponent extends React.PureComponent {
 
     renderForm = () => {
         return ([
-            <Button key={1} block color={`primary`} onClick={this.onCurrentInformationToggle}>Current Information</Button>,
+            <Button className={`current-toggle`} key={1} block color={`primary`} onClick={this.onCurrentInformationToggle}>Current Information</Button>,
             <Collapse key={2} isOpen={this.state.currentInformationIsOpen}>
                 <FormComponent
                     key={`current`}
@@ -50,7 +50,7 @@ export class CalculatorsComponent extends React.PureComponent {
                     showactivityFactor
                 />
             </Collapse>,
-            <Button key={3} block color={`primary`} onClick={this.onGoalInformationToggle}>Goal Information</Button>,
+            <Button className={`goal-toggle`} key={3} block color={`primary`} onClick={this.onGoalInformationToggle}>Goal Information</Button>,
             <Collapse key={4} isOpen={this.state.goalInformationIsOpen}>
                 <FormComponent
                     key={`goal`}
@@ -85,7 +85,7 @@ export class CalculatorsComponent extends React.PureComponent {
                     <Col md={3} lg={2}>
                         <FormGroup>
                             <Label>Calculator</Label>
-                            <Input type={`select`} onChange={this.changeCalculator}>
+                            <Input className={`calculator-selector`} type={`select`} onChange={this.changeCalculator}>
                                 <option value={`pounds`}>{this.props.unitOfMeasure === IMPERIAL ? 'Pounds' : 'Kilograms'} Per Week</option>
                                 <option value={`goalDate`}>Goal Date</option>
                                 <option value={`percentage`}>Percent Per Week</option>
@@ -109,6 +109,7 @@ export class CalculatorsComponent extends React.PureComponent {
     }
 }
 
+/* istanbul ignore next */
 const mapStateToProps = (state) => {
     return {
         activityFactor: state.user.activityFactor,
@@ -130,8 +131,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CalculatorsComponent);
+export default connect(mapStateToProps)(CalculatorsComponent);

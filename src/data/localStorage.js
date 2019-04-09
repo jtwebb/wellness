@@ -10,11 +10,7 @@ export const getData = () => {
 };
 
 export const saveData = (data) => {
-    try {
-        return localStorage.setItem(localStorageKey, JSON.stringify(data));
-    } catch (e) {
-        console.error(e);
-    }
+    return localStorage.setItem(localStorageKey, JSON.stringify(data));
 };
 
 export const saveItem = ({key, value}) => {

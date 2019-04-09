@@ -17,7 +17,7 @@ export default class HeaderComponent extends React.PureComponent {
 
     render() {
         return (
-            <Navbar color={`dark`} dark expand={`md`}>
+            <Navbar className={`app-header`} color={`dark`} dark expand={`md`}>
                 <NavbarToggler onClick={this.toggle}/>
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav navbar>

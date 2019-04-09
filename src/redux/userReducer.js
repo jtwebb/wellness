@@ -1,5 +1,6 @@
 import { createSlice } from 'redux-starter-kit';
 import { getData, saveData } from '../data/localStorage';
+import moment from 'moment';
 
 export const MALE = 'MALE';
 export const FEMALE = 'FEMALE';
@@ -27,7 +28,7 @@ export default createSlice({
         email: '',
         fatLossPerWeek: 1,
         gender: MALE,
-        goalDate: Date.now(),
+        goalDate: moment(new Date()).format('MM-DD-YYYY'),
         height: 0,
         idealBodyFatPercentage: 0,
         idealWeight: 0,

@@ -44,6 +44,7 @@ export class BmrComponent extends React.PureComponent {
         let currentValue;
 
         for (let key in results[calc]) {
+            /* istanbul ignore else */
             if (results[calc].hasOwnProperty(key)) {
                 currentValue = results[calc][key];
                 returnValue.push((
@@ -60,13 +61,13 @@ export class BmrComponent extends React.PureComponent {
 
     renderResults = () => {
         if (!this.props.age || !this.props.height || !this.props.weight || !this.props.gender || !this.props.activityFactor) {
-            return <Alert color={`danger`}>Please enter your data</Alert>;
+            return <Alert className={`no-data-error`} color={`danger`}>Please enter your data</Alert>;
         }
 
         const calculators = [AVERAGE, HARRIS_BENEDICT, MIFFLIN_ST_JEOR, KATCH_MCARDLE, CUNNINGHAM];
 
         return (
-            <div>
+            <div className={`bmr-results`}>
                 <Nav tabs>
                     {calculators.map((calc, i) => {
                         return (
@@ -82,7 +83,7 @@ export class BmrComponent extends React.PureComponent {
                     {calculators.map((calc, i) => {
                         if ((calc === KATCH_MCARDLE || calc === CUNNINGHAM) && !this.props.bodyFatPercentage) {
                             return (
-                                <TabPane tabId={i}>
+                                <TabPane key={calc} tabId={i}>
                                     <Alert color={`danger`}>Please add body fat percentage to see results for this calculation</Alert>
                                 </TabPane>
                             );
@@ -126,6 +127,7 @@ export class BmrComponent extends React.PureComponent {
     }
 }
 
+/* istanbul ignore next */
 const mapStateToProps = (state) => {
     return {
         activityFactor: state.user.activityFactor,

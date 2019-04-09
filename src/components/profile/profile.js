@@ -32,6 +32,7 @@ export class ProfileComponent extends React.PureComponent {
     }
 }
 
+/* istanbul ignore next */
 const mapStateToProps = (state) => {
     return {
         activityFactor: state.user.activityFactor,
