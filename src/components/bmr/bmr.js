@@ -64,33 +64,39 @@ export class BmrComponent extends React.PureComponent {
             return <Alert className={`no-data-error`} color={`danger`}>Please enter your data</Alert>;
         }
 
-        const calculators = [AVERAGE, HARRIS_BENEDICT, MIFFLIN_ST_JEOR, KATCH_MCARDLE, CUNNINGHAM];
+        const calculators = [
+            {display: 'Average', key: AVERAGE},
+            {display: 'Revised Harris-Benedict', key: HARRIS_BENEDICT},
+            {display: 'Mifflin-St. Jeor', key: MIFFLIN_ST_JEOR},
+            {display: 'Katch-McArdle', key: KATCH_MCARDLE},
+            {display: 'Cunningham', key: CUNNINGHAM},
+        ];
 
         return (
             <div className={`bmr-results`}>
                 <Nav tabs>
-                    {calculators.map((calc, i) => {
+                    {calculators.map(({display, key}, i) => {
                         return (
-                            <NavItem key={calc} className={this.props.preferredCalculator === calc ? 'success' : ''}>
+                            <NavItem key={key} className={this.props.preferredCalculator === key ? 'success' : ''}>
                                 <NavLink className={this.state.activeTab === i ? 'active' : ''} onClick={this.changeTab.bind(this, i)}>
-                                    {calc}
+                                    {display}
                                 </NavLink>
                             </NavItem>
                         );
                     })}
                 </Nav>
                 <TabContent activeTab={this.state.activeTab}>
-                    {calculators.map((calc, i) => {
-                        if ((calc === KATCH_MCARDLE || calc === CUNNINGHAM) && !this.props.bodyFatPercentage) {
+                    {calculators.map(({display, key}, i) => {
+                        if ((key === KATCH_MCARDLE || key === CUNNINGHAM) && !this.props.bodyFatPercentage) {
                             return (
-                                <TabPane key={calc} tabId={i}>
+                                <TabPane key={key} tabId={i}>
                                     <Alert color={`danger`}>Please add body fat percentage to see results for this calculation</Alert>
                                 </TabPane>
                             );
                         }
 
                         return (
-                            <TabPane tabId={i} key={calc}>
+                            <TabPane tabId={i} key={key}>
                                 <Table responsive striped borderless>
                                     <thead>
                                         <tr>
@@ -99,7 +105,7 @@ export class BmrComponent extends React.PureComponent {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.renderCalculatorResults(calc)}
+                                        {this.renderCalculatorResults(key)}
                                     </tbody>
                                 </Table>
                             </TabPane>

@@ -47,13 +47,13 @@ export const getForm = (unit) => {
                     display: `Weight (${unit === IMPERIAL ? 'lbs' : 'kg'})`,
                     key: 'weight',
                     type: 'number',
-                    step: .1
+                    step: .01
                 },
                 {
                     display: 'Body Fat Percentage (if known)',
                     key: 'bodyFatPercentage',
                     type: 'number',
-                    step: .1
+                    step: .01
                 },
                 {
                     display: 'Gender',
@@ -95,19 +95,19 @@ export const getForm = (unit) => {
                     display: `Ideal Weight (${unit === IMPERIAL ? 'lbs' : 'kg'})`,
                     key: 'idealWeight',
                     type: 'number',
-                    step: .1
+                    step: .01
                 },
                 {
                     display: 'Ideal Body Fat Percentage',
                     key: 'idealBodyFatPercentage',
                     type: 'number',
-                    step: .1
+                    step: .01
                 },
                 {
                     display: `${unit === IMPERIAL ? 'Pounds' : 'Kilograms'} Loss Per Week`,
                     key: 'fatLossPerWeek',
                     type: 'number',
-                    step: .1
+                    step: .01
                 },
                 {
                     display: 'Lowest Calories Per Day',
@@ -119,7 +119,7 @@ export const getForm = (unit) => {
                     display: 'Body Weight Percentage Lose Per Week',
                     key: 'percentLossPerWeek',
                     type: 'number',
-                    step: .1
+                    step: .01
                 },
                 {
                     display: 'Goal Date',
