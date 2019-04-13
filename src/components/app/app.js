@@ -4,6 +4,7 @@ import Profile from '../profile/profile';
 import Header from '../header/header';
 import Bmr from '../bmr/bmr';
 import Calculators from '../calculators/calculators';
+import Activity from '../activity/activity';
 
 export default class App extends Component {
     render() {
@@ -13,6 +14,7 @@ export default class App extends Component {
                     <Header/>
                     <Route path={`/`} exact component={Bmr}/>
                     <Route path={`/calculators`} exact component={Calculators}/>
+                    <Route path={`/activity`} exact component={Activity}/>
                     <Route path={`/profile`} exact component={Profile}/>
                 </div>
             </Router>

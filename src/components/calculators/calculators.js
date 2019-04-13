@@ -1,11 +1,11 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Input, FormGroup, Label, Col, Container, Row, Collapse, Button } from 'reactstrap';
 import ActivityFactorComponent from '../activityFactor/activityFactor';
-import FormComponent from '../form/form';
-import { IMPERIAL } from '../../redux/userReducer';
-import { byGoalDate, byPercentage, poundsPerWeek } from '../../utils/weightLossCalculators';
 import CalculatorComponent from './calculator';
+import React from 'react';
+import SidebarFormComponent from '../form/sidebarForm';
+import { byGoalDate, byPercentage, poundsPerWeek } from '../../utils/weightLossCalculators';
+import { connect } from 'react-redux';
+import { IMPERIAL } from '../../redux/userReducer';
+import { Input, FormGroup, Label, Col, Container, Row } from 'reactstrap';
 
 import './calculators.scss';
 
@@ -14,8 +14,6 @@ export class CalculatorsComponent extends React.PureComponent {
         super(props);
 
         this.state = {
-            currentInformationIsOpen: false,
-            goalInformationIsOpen: true,
             currentCalculator: 'pounds'
         };
     }
@@ -24,46 +22,6 @@ export class CalculatorsComponent extends React.PureComponent {
         if (target.value !== this.state.currentCalculator) {
             this.setState({currentCalculator: target.value});
         }
-    };
-
-    onCurrentInformationToggle = () => {
-        this.setState({currentInformationIsOpen: !this.state.currentInformationIsOpen});
-    };
-
-    onGoalInformationToggle = () => {
-        this.setState({goalInformationIsOpen: !this.state.goalInformationIsOpen});
-    };
-
-    renderForm = () => {
-        return ([
-            <Button className={`current-toggle`} key={1} block color={`primary`} onClick={this.onCurrentInformationToggle}>Current Information</Button>,
-            <Collapse key={2} isOpen={this.state.currentInformationIsOpen}>
-                <FormComponent
-                    key={`current`}
-                    current
-                    showTitle={false}
-                    showage
-                    showheight
-                    showweight
-                    showbodyFatPercentage
-                    showgender
-                    showactivityFactor
-                />
-            </Collapse>,
-            <Button className={`goal-toggle`} key={3} block color={`primary`} onClick={this.onGoalInformationToggle}>Goal Information</Button>,
-            <Collapse key={4} isOpen={this.state.goalInformationIsOpen}>
-                <FormComponent
-                    key={`goal`}
-                    goal
-                    showTitle={false}
-                    showidealWeight
-                    showpercentLossPerWeek={this.state.currentCalculator === 'percentage'}
-                    showgoalDate={this.state.currentCalculator === 'goalDate'}
-                    showfatLossPerWeek={this.state.currentCalculator === 'pounds'}
-                    showlowestCalorieIntake
-                />
-            </Collapse>
-        ]);
     };
 
     getResults = () => {
@@ -92,7 +50,12 @@ export class CalculatorsComponent extends React.PureComponent {
                             </Input>
                         </FormGroup>
                         <ActivityFactorComponent/>
-                        {this.renderForm()}
+                        <SidebarFormComponent goal={{
+                            currentOpen: false,
+                            showpercentLossPerWeek: this.state.currentCalculator === 'percentage',
+                            showgoalDate: this.state.currentCalculator === 'goalDate',
+                            showfatLossPerWeek: this.state.currentCalculator === 'pounds'
+                        }}/>
                     </Col>
                     <Col md={9} lg={10}>
                         {

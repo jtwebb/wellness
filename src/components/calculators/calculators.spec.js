@@ -42,20 +42,4 @@ describe('Calculators', () => {
         selector.simulate('change', {target: {value: 'pounds'}});
         expect(poundSpy).not.toHaveBeenCalled();
     });
-
-    it('should toggle current form visibility on button click', () => {
-        const wrapper = shallow(<CalculatorsComponent {...props}/>);
-        const button = wrapper.find('.current-toggle');
-        expect(wrapper.state().currentInformationIsOpen).toBeFalsy();
-        button.simulate('click');
-        expect(wrapper.state().currentInformationIsOpen).toBeTruthy();
-    });
-
-    it('should toggle goal form visibility on button click', () => {
-        const wrapper = shallow(<CalculatorsComponent {...props}/>);
-        const button = wrapper.find('.goal-toggle');
-        expect(wrapper.state().goalInformationIsOpen).toBeTruthy();
-        button.simulate('click');
-        expect(wrapper.state().goalInformationIsOpen).toBeFalsy();
-    });
 });
