@@ -4,16 +4,19 @@ import { Alert, Col, Container, FormGroup, Input, Label, Row } from 'reactstrap'
 import { connect } from 'react-redux';
 import { convertToKilograms } from '../../utils/conversion';
 import { IMPERIAL } from '../../redux/userReducer';
+import Select from 'react-select';
 
 import './activity.scss';
 
 export class ActivityComponent extends React.PureComponent {
+    activities = [];
+
     constructor(props) {
         super(props);
 
         this.state = {
             categories: [],
-            activityCategory: 'All',
+            activityCategory: {value: 'All', label: 'All'},
             currentActivity: {},
             activities: [],
             duration: 0
@@ -23,14 +26,24 @@ export class ActivityComponent extends React.PureComponent {
     componentDidMount = () => {
         import('../../data/physicalActivities')
             .then((data) => {
+                this.activities = data.activities;
+                const categories = [...new Set(['All'].concat(data.activities.map((activity) => {
+                    return activity.category;
+                })))]
+                    .map((category) => {
+                        return {value: category, label: category};
+                    });
+
                 this.setState({
-                    categories: [...new Set(['All'].concat(data.activities.map((activity) => {
-                        return activity.category;
-                    })))],
-                    activities: data.activities,
+                    categories,
+                    activities: data.activities.sort(this.sortActivities),
                     currentActivity: data.activities[0]
                 });
             });
+    };
+
+    sortActivities = (a, b) => {
+        return (a.label > b.label) ? 1 : (b.label > a.label) ? -1 : 0;
     };
 
     getWeight = (weight) => {
@@ -41,24 +54,36 @@ export class ActivityComponent extends React.PureComponent {
         return (this.state.duration * (this.state.currentActivity.mets * 3.5 * this.getWeight(weight)) / 200).toFixed(2);
     };
 
-    onCategoryChange = ({target}) => {
-        const updateActivities = this.state.activities.filter((activity) => {
-            if (target.value === 'All') {
+    onCategoryChange = (selectedCategory) => {
+        const updateActivities = this.activities.filter((activity) => {
+            if (selectedCategory.value === 'All') {
                 return true;
             }
-            return activity.category === target.value;
+            return activity.category === selectedCategory.value;
+        }).sort(this.sortActivities);
+
+        this.setState({
+            activityCategory: selectedCategory,
+            activities: updateActivities,
+            currentActivity: updateActivities[0]
         });
-        this.setState({activityCategory: target.value, activities: updateActivities, currentActivity: updateActivities[0]});
     };
 
-    onActivityChange = ({target}) => {
+    onActivityChange = (selectedActivity) => {
         this.setState({currentActivity: this.state.activities.find((activity) => {
-            return activity.id === target.value;
+            return activity.value === selectedActivity.value;
         })});
     };
 
     onDurationChange = ({target}) => {
         this.setState({duration: target.value});
+    };
+
+    filterOption = (option, input) => {
+        const words = input.split(' ');
+        return words.reduce((acc, cur) => {
+            return acc && option.label.toLowerCase().includes(cur.toLowerCase());
+        }, true);
     };
 
     renderResults = () => {
@@ -68,7 +93,7 @@ export class ActivityComponent extends React.PureComponent {
 
         return (
             <Alert color={`info`}>
-                <h4 className={`activity-description`}>{this.state.currentActivity.description}</h4>
+                <h4 className={`activity-description`}>{this.state.currentActivity.label}</h4>
                 <p>Calories you would burn at your current weight: <strong>{this.getCaloriesBurned(this.props.weight)}</strong></p>
                 <p>Calories you would burn at your goal weight: <strong>{this.getCaloriesBurned(this.props.idealWeight)}</strong></p>
             </Alert>
@@ -87,21 +112,28 @@ export class ActivityComponent extends React.PureComponent {
                             <Col lg={6}>
                                 <FormGroup>
                                     <Label>Category</Label>
-                                    <Input className={`category-input`} type={`select`} onChange={this.onCategoryChange}>
-                                        {this.state.categories.map((category) => {
-                                            return <option key={category} value={category}>{category}</option>;
-                                        })}
-                                    </Input>
+                                    <Select
+                                        className={`category-input`}
+                                        classNamePrefix={`category-input`}
+                                        filterOption={this.filterOption}
+                                        isClearable={false}
+                                        onChange={this.onCategoryChange}
+                                        options={this.state.categories}
+                                        value={this.state.activityCategory}
+                                    />
                                 </FormGroup>
                             </Col>
                             <Col lg={6}>
                                 <FormGroup>
                                     <Label>Activity</Label>
-                                    <Input className={`activity-input`} type={`select`} onChange={this.onActivityChange}>
-                                        {this.state.activities.map((activity) => {
-                                            return <option key={activity.id} value={activity.id}>{activity.description}</option>;
-                                        })}
-                                    </Input>
+                                    <Select
+                                        className={`activity-input`}
+                                        filterOption={this.filterOption}
+                                        isClearable={false}
+                                        onChange={this.onActivityChange}
+                                        options={this.state.activities}
+                                        value={this.state.currentActivity}
+                                    />
                                 </FormGroup>
                             </Col>
                         </Row>

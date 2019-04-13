@@ -27,29 +27,33 @@ describe('Calculators', () => {
         const wrapper = shallow(<ActivityComponent {...props}/>);
         const spy = jest.spyOn(wrapper.instance(), 'setState');
         const input = wrapper.find('.category-input');
-        const activity = {description: 'An Activity', id: '1234', category: 'Conditioning Exercise'};
-        wrapper.state().activities = [activity];
-        input.simulate('change', {target: {value: 'Conditioning Exercise'}});
-        expect(spy).toHaveBeenCalledWith({activityCategory: 'Conditioning Exercise', activities: [activity], currentActivity: activity});
+        const activity = {label: 'An Activity', value: '1234', category: 'Conditioning Exercise'};
+        wrapper.instance().activities = [activity];
+        input.props().onChange({value: 'Conditioning Exercise', label: 'Conditioning Exercise'});
+        expect(spy).toHaveBeenCalledWith({
+            activityCategory: {value: 'Conditioning Exercise', label: 'Conditioning Exercise'},
+            activities: [activity],
+            currentActivity: activity
+        });
     });
 
     it('should set the category if it is set to all', () => {
         const wrapper = shallow(<ActivityComponent {...props}/>);
         const spy = jest.spyOn(wrapper.instance(), 'setState');
         const input = wrapper.find('.category-input');
-        const activity = {description: 'An Activity', id: '1234', category: 'Conditioning Exercise'};
-        wrapper.state().activities = [activity];
-        input.simulate('change', {target: {value: 'All'}});
-        expect(spy).toHaveBeenCalledWith({activityCategory: 'All', activities: [activity], currentActivity: activity});
+        const activity = {label: 'An Activity', value: '1234', category: 'Conditioning Exercise'};
+        wrapper.instance().activities = [activity];
+        input.props().onChange({value: 'All', label: 'All'});
+        expect(spy).toHaveBeenCalledWith({activityCategory: {value: 'All', label: 'All'}, activities: [activity], currentActivity: activity});
     });
 
     it('should set the current activity', () => {
         const wrapper = shallow(<ActivityComponent {...props}/>);
         const spy = jest.spyOn(wrapper.instance(), 'setState');
         const input = wrapper.find('.activity-input');
-        const activity = {description: 'An Activity', id: '1234', category: 'Conditioning Exercise'};
+        const activity = {label: 'An Activity', value: '1234', category: 'Conditioning Exercise'};
         wrapper.state().activities = [activity];
-        input.simulate('change', {target: {value: '1234'}});
+        input.props().onChange({value: '1234', label: 'An Activity'});
         expect(spy).toHaveBeenCalledWith({currentActivity: activity});
     });
 
