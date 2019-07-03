@@ -11,6 +11,7 @@ import {
     METRIC,
     MIFFLIN_ST_JEOR,
     MODERATE,
+    NO_ACTIVITY,
     SEDENTARY,
     VERY_ACTIVE
 } from '../../redux/userReducer';
@@ -78,6 +79,7 @@ export const getForm = (unit) => {
                     key: 'activityFactor',
                     type: 'select',
                     options: [
+                        {value: NO_ACTIVITY, display: 'None'},
                         {value: SEDENTARY, display: 'Sedentary'},
                         {value: LIGHT, display: 'Lightly Active'},
                         {value: MODERATE, display: 'Moderately Active'},

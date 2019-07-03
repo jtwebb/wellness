@@ -8,6 +8,7 @@ export const FEMALE = 'FEMALE';
 export const IMPERIAL = 'IMPERIAL';
 export const METRIC = 'METRIC';
 
+export const NO_ACTIVITY = 'NO_ACTIVITY';
 export const SEDENTARY = 'SEDENTARY';
 export const LIGHT = 'LIGHT';
 export const MODERATE = 'MODERATE';

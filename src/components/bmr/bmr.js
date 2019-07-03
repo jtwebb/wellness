@@ -13,7 +13,7 @@ import {
     Table,
     TabPane
 } from 'reactstrap';
-import { AVERAGE, CUNNINGHAM, HARRIS_BENEDICT, KATCH_MCARDLE, MIFFLIN_ST_JEOR } from '../../redux/userReducer';
+import { AVERAGE, CUNNINGHAM, HARRIS_BENEDICT, KATCH_MCARDLE, MIFFLIN_ST_JEOR, NO_ACTIVITY } from '../../redux/userReducer';
 import { getAll } from '../../utils/bmrCalculators';
 import { connect } from 'react-redux';
 
@@ -45,7 +45,7 @@ export class BmrComponent extends React.PureComponent {
 
         for (let key in results[calc]) {
             /* istanbul ignore else */
-            if (results[calc].hasOwnProperty(key)) {
+            if (results[calc].hasOwnProperty(key) && key !== NO_ACTIVITY) {
                 currentValue = results[calc][key];
                 returnValue.push((
                     <tr key={currentValue.display} className={key === this.props.activityFactor ? 'table-success' : ''}>

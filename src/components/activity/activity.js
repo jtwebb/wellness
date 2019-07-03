@@ -91,11 +91,15 @@ export class ActivityComponent extends React.PureComponent {
             return null;
         }
 
+        const currentWeightCalories = +this.getCaloriesBurned(this.props.weight);
+        const idealWeightCalories = +this.getCaloriesBurned(this.props.idealWeight);
+
         return (
             <Alert color={`info`}>
                 <h4 className={`activity-description`}>{this.state.currentActivity.label}</h4>
-                <p>Calories you would burn at your current weight: <strong>{this.getCaloriesBurned(this.props.weight)}</strong></p>
-                <p>Calories you would burn at your goal weight: <strong>{this.getCaloriesBurned(this.props.idealWeight)}</strong></p>
+                <p>Calories you would burn at your current weight: <strong>{currentWeightCalories}</strong></p>
+                <p>Calories you would burn at your goal weight: <strong>{idealWeightCalories}</strong></p>
+                <p>Calories you would burn on average: <strong>{((currentWeightCalories + idealWeightCalories) / 2)}</strong></p>
             </Alert>
         );
     };

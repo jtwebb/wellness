@@ -9,6 +9,7 @@ import {
     MALE,
     MIFFLIN_ST_JEOR,
     MODERATE,
+    NO_ACTIVITY,
     SEDENTARY,
     VERY_ACTIVE
 } from '../redux/userReducer';
@@ -82,6 +83,7 @@ export const getAll = (user) => {
 export const addActivityFactors = (base) => {
     return {
         base: {display: 'Base BMR', value: base},
+        [NO_ACTIVITY]: {display: 'None', value: base},
         [SEDENTARY]: {display: 'Sedentary', value: base * 1.2},
         [LIGHT]: {display: 'Lightly Active', value: base * 1.375},
         [MODERATE]: {display: 'Moderately Active', value: base * 1.55},

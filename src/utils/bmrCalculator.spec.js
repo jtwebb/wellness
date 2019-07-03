@@ -16,7 +16,7 @@ import {
     KATCH_MCARDLE, LIGHT,
     MALE,
     METRIC,
-    MIFFLIN_ST_JEOR, MODERATE,
+    MIFFLIN_ST_JEOR, MODERATE, NO_ACTIVITY,
     SEDENTARY, VERY_ACTIVE
 } from '../redux/userReducer';
 
@@ -130,6 +130,7 @@ describe('BMR Calculator', () => {
         const base = 2000;
         const expected = {
             base: {display: 'Base BMR', value: base},
+            [NO_ACTIVITY]: {display: 'None', value: base},
             [SEDENTARY]: {display: 'Sedentary', value: 2400},
             [LIGHT]: {display: 'Lightly Active', value: 2750},
             [MODERATE]: {display: 'Moderately Active', value: 3100},
