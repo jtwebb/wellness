@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import configureStore from './redux/configureStore';
 import './styles/app.scss';
+import './styles/print.scss';
 import App from './components/app/app';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
