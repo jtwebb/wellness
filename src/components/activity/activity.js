@@ -97,9 +97,9 @@ export class ActivityComponent extends React.PureComponent {
         return (
             <Alert color={`info`}>
                 <h4 className={`activity-description`}>{this.state.currentActivity.label}</h4>
-                <p>Calories you would burn at your current weight: <strong>{currentWeightCalories}</strong></p>
-                <p>Calories you would burn at your goal weight: <strong>{idealWeightCalories}</strong></p>
-                <p>Calories you would burn on average: <strong>{((currentWeightCalories + idealWeightCalories) / 2)}</strong></p>
+                <p>Calories you would burn at your current weight: <strong>{currentWeightCalories.toFixed(2)}</strong></p>
+                <p>Calories you would burn at your goal weight: <strong>{idealWeightCalories.toFixed(2)}</strong></p>
+                <p>Calories you would burn on average: <strong>{((currentWeightCalories + idealWeightCalories) / 2).toFixed(2)}</strong></p>
             </Alert>
         );
     };
