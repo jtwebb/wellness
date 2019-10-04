@@ -13,14 +13,19 @@ export class CalculatorsComponent extends React.PureComponent {
     constructor(props) {
         super(props);
 
+        const params = new URLSearchParams(window.location.search.replace('?', ''));
+
         this.state = {
-            currentCalculator: 'pounds'
+            currentCalculator: params.get('c') || 'pounds'
         };
+
+        console.log(this.state);
     }
 
     changeCalculator = ({target}) => {
         if (target.value !== this.state.currentCalculator) {
             this.setState({currentCalculator: target.value});
+            window.history.replaceState({}, '', `?c=${target.value}`);
         }
     };
 
@@ -43,7 +48,7 @@ export class CalculatorsComponent extends React.PureComponent {
                     <Col md={3} lg={2}>
                         <FormGroup>
                             <Label>Calculator</Label>
-                            <Input className={`calculator-selector`} type={`select`} onChange={this.changeCalculator}>
+                            <Input className={`calculator-selector`} defaultValue={this.state.currentCalculator} type={`select`} onChange={this.changeCalculator}>
                                 <option value={`pounds`}>{this.props.unitOfMeasure === IMPERIAL ? 'Pounds' : 'Kilograms'} Per Week</option>
                                 <option value={`goalDate`}>Goal Date</option>
                                 <option value={`percentage`}>Percent Per Week</option>

@@ -24,6 +24,11 @@ export default class CalculatorComponent extends React.PureComponent {
                         <CardText>
                             Your average BMR across this timeline is <strong>{this.props.calculatorResults.averageBmr.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong>
                         </CardText>}
+                        {this.props.calculatorResults.averageBurnPerDay &&
+                        <CardText>
+                            In addition to your activity factor, on average, you need to burn an additional <strong>{this.props.calculatorResults.averageBurnPerDay.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                            &nbsp;calories</strong> each day.
+                        </CardText>}
                         {this.props.calculatorResults.dailyCalorieDeficit &&
                         <CardText>
                             You will need to have an average deficit of <strong>

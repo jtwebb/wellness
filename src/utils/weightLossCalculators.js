@@ -10,11 +10,13 @@ export const poundsPerWeek = (user) => {
     const weeks = [];
     let updatedUser = {...user};
     let bmr = 0;
+    let burnPerDay = 0;
 
     while (updatedUser.weight > user.idealWeight) {
         updatedUser = {...updatedUser, weight: updatedUser.weight - user.fatLossPerWeek};
         const results = caloriesToBurn(updatedUser, user.fatLossPerWeek);
         bmr += results.bmr;
+        burnPerDay += results.calories;
         weeks.push({
             caloriesToBurn: results.calories,
             weightAtEndOfWeek: +updatedUser.weight.toFixed(2)
@@ -24,7 +26,8 @@ export const poundsPerWeek = (user) => {
     return {
         dailyCalorieDeficit: +(getCaloriesForFatLoss(user.fatLossPerWeek, user.unitOfMeasure) / 7).toFixed(2),
         weeks,
-        averageBmr: +(bmr / weeks.length).toFixed(2)
+        averageBmr: +(bmr / weeks.length).toFixed(2),
+        averageBurnPerDay: +(burnPerDay / weeks.length).toFixed(2)
     };
 };
 
@@ -40,11 +43,13 @@ export const byGoalDate = (user) => {
     const weeksToLose = daysToLose / 7;
     const weightPerWeek = weightToLose / weeksToLose;
     let bmr = 0;
+    let burnPerDay = 0;
 
     for (let i = 0; i < weeksToLose; i++) {
         updatedUser = {...updatedUser, weight: updatedUser.weight - weightPerWeek};
         const results = caloriesToBurn(updatedUser, weightPerWeek);
         bmr += results.bmr;
+        burnPerDay += results.calories;
         weeks.push({
             caloriesToBurn: results.calories,
             weightAtEndOfWeek: +updatedUser.weight.toFixed(2)
@@ -55,7 +60,8 @@ export const byGoalDate = (user) => {
         dailyCalorieDeficit: +(getCaloriesForFatLoss(weightPerWeek, user.unitOfMeasure) / 7).toFixed(2),
         weightPerWeek,
         weeks,
-        averageBmr: +(bmr / weeks.length).toFixed(2)
+        averageBmr: +(bmr / weeks.length).toFixed(2),
+        averageBurnPerDay: +(burnPerDay / weeks.length).toFixed(2)
     };
 };
 
@@ -67,12 +73,14 @@ export const byPercentage = (user) => {
     const weeks = [];
     let updatedUser = {...user};
     let bmr = 0;
+    let burnPerDay = 0;
 
     while (updatedUser.weight > user.idealWeight && user.percentLossPerWeek > 0) {
         const weightToLose = updatedUser.weight * (user.percentLossPerWeek / 100);
         updatedUser = {...updatedUser, weight: updatedUser.weight - weightToLose};
         const results = caloriesToBurn(updatedUser, weightToLose);
         bmr += results.bmr;
+        burnPerDay += results.calories;
 
         weeks.push({
             caloriesToBurn: results.calories,
@@ -83,7 +91,8 @@ export const byPercentage = (user) => {
 
     return {
         weeks,
-        averageBmr: +(bmr / weeks.length).toFixed(2)
+        averageBmr: +(bmr / weeks.length).toFixed(2),
+        averageBurnPerDay: +(burnPerDay / weeks.length).toFixed(2)
     };
 };
 
