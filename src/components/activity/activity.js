@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { convertToKilograms } from '../../utils/conversion';
 import { IMPERIAL } from '../../redux/userReducer';
 import Select from 'react-select';
+import { fetchActivities } from '../../redux/activityReducer';
 
 import './activity.scss';
 
@@ -24,22 +25,18 @@ export class ActivityComponent extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        import('../../data/physicalActivities')
-            .then((data) => {
-                this.activities = data.activities;
-                const categories = [...new Set(['All'].concat(data.activities.map((activity) => {
-                    return activity.category;
-                })))]
-                    .map((category) => {
-                        return {value: category, label: category};
-                    });
+        this.props.getActivities(this.props.activities);
+    };
 
-                this.setState({
-                    categories,
-                    activities: data.activities.sort(this.sortActivities),
-                    currentActivity: data.activities[0]
-                });
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.activities && (prevProps.activities !== this.props.activities || prevProps.categories !== this.props.categories)) {
+            this.activities = this.props.activities;
+            this.setState({
+                categories: this.props.categories,
+                activities: this.props.activities.sort(this.sortActivities),
+                currentActivity: this.props.activities[0]
             });
+        }
     };
 
     sortActivities = (a, b) => {
@@ -168,8 +165,18 @@ const mapStateToProps = (state) => {
     return {
         unitOfMeasure: state.user.unitOfMeasure,
         idealWeight: state.user.idealWeight,
-        weight: state.user.weight
+        weight: state.user.weight,
+        activities: state.activity.activities,
+        categories: state.activity.categories
     };
 };
 
-export default connect(mapStateToProps)(ActivityComponent);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getActivities: (activities) => {
+            return dispatch(fetchActivities(activities));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityComponent);

@@ -5,7 +5,7 @@ import rootReducer from './reducers';
 export default function configureAppStore(preloadedState) {
     const store = configureStore({
         reducer: rootReducer,
-        middleware: [thunk, ...getDefaultMiddleware()],
+        middleware: [...getDefaultMiddleware(), thunk],
         preloadedState,
         devTools: process.env.NODE_ENV !== 'production'
     });

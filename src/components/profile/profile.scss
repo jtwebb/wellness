@@ -27,3 +27,41 @@
         }
     }
 }
+
+.profile-exercises {
+    margin: 20px auto 100px;
+
+    h3 {
+        margin-bottom: 50px;
+    }
+
+    h5 {
+        border-bottom: solid 2px #dddddd;
+        margin-bottom: 20px;
+        margin-top: 40px;
+        padding-bottom: 15px;
+    }
+
+    .row:nth-child(2) h5 {
+        margin-top: 0;
+    }
+
+    .exercise-form {
+        margin-top: 20px;
+    }
+
+    .exercise-add-row {
+        margin-top: 40px;
+        text-align: right;
+    }
+
+    @media screen and (max-width: 767px) {
+        .exercise-form > div {
+            margin-top: 20px;
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+}

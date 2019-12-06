@@ -38,7 +38,16 @@ export default createSlice({
         percentLossPerWeek: 1,
         preferredCalculator: AVERAGE,
         unitOfMeasure: IMPERIAL,
-        weight: 0
+        weight: 0,
+        workouts: [
+            { title: 'Monday', exercises: [] },
+            { title: 'Tuesday', exercises: [] },
+            { title: 'Wednesday', exercises: [] },
+            { title: 'Thursday', exercises: [] },
+            { title: 'Friday', exercises: [] },
+            { title: 'Saturday', exercises: [] },
+            { title: 'Sunday', exercises: [] }
+        ]
     },
     reducers: {
         updateUserProfile(state, action) {

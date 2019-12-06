@@ -40,6 +40,10 @@ export default class CalculatorComponent extends React.PureComponent {
                             You will end up losing an average of <strong>{this.props.calculatorResults.weightPerWeek.toFixed(2)}
                             &nbsp;{this.props.unitOfMeasure === IMPERIAL ? 'pounds' : 'kilograms'}</strong> per week.
                         </CardText>}
+                        {this.props.calculatorResults.caloriesBurnedPerDayExplanation &&
+                        <CardText>
+                            Calories Burned Per Day includes both exercise and diet calories (based on "Lowest Calories Per Day")
+                        </CardText>}
                     </CardBody>
                 </Card>
 
@@ -47,7 +51,8 @@ export default class CalculatorComponent extends React.PureComponent {
                     <thead>
                         <tr>
                             <th>Week Of</th>
-                            <th>Still Need To Burn</th>
+                            {this.props.calculatorResults.weeks[0].caloriesToBurn && <th>Still Need To Burn</th>}
+                            {this.props.calculatorResults.weeks[0].caloriesBurnedPerDay && <th>Calories Burned Per Day</th>}
                             <th>Weight at End of Week</th>
                             {this.props.calculatorResults.weeks[0].weightLost && <th>Weight Lost</th>}
                         </tr>
@@ -57,9 +62,10 @@ export default class CalculatorComponent extends React.PureComponent {
                             return (
                                 <tr key={i}>
                                     <td>{date.add(1, 'w').format('MM-DD-YYYY')}</td>
-                                    <td>{week.caloriesToBurn.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                    {week.caloriesToBurn && <td>{week.caloriesToBurn.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>}
+                                    {week.caloriesBurnedPerDay && <td>{week.caloriesBurnedPerDay.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>}
                                     <td>{week.weightAtEndOfWeek.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                    <td>{week.weightLost && week.weightLost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                    {week.weightLost && <td>{week.weightLost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>}
                                 </tr>
                             );
                         })}

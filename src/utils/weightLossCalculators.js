@@ -1,6 +1,6 @@
 import { getAll } from './bmrCalculators';
-import { IMPERIAL } from '../redux/userReducer';
-import { convertToPounds } from './conversion';
+import { IMPERIAL, SEDENTARY } from '../redux/userReducer';
+import { convertToKilograms, convertToPounds } from './conversion';
 
 export const poundsPerWeek = (user) => {
     if (!user.weight || !user.idealWeight || !user.fatLossPerWeek) {
@@ -94,6 +94,50 @@ export const byPercentage = (user) => {
         averageBmr: +(bmr / weeks.length).toFixed(2),
         averageBurnPerDay: +(burnPerDay / weeks.length).toFixed(2)
     };
+};
+
+export const byExercise = (user) => {
+    if (!user.weight || !user.idealWeight) {
+        return false;
+    }
+
+    const weeks = [];
+    let bmr = 0;
+    let updatedUser = {...user};
+
+    while (updatedUser.weight > user.idealWeight) {
+        const currentBmr = getAll(updatedUser)[user.preferredCalculator];
+        bmr += currentBmr[SEDENTARY].value;
+        let caloriesBurned = 0;
+        user.workouts.forEach((workout) => {
+            caloriesBurned += workout.exercises.reduce((previous, current) => {
+                return previous + (+getCaloriesBurned(updatedUser.weight, current.duration, current.activity.mets, user));
+            }, 0)
+        });
+        caloriesBurned += (currentBmr[SEDENTARY].value * 7) - (user.lowestCalorieIntake * 7);
+        const poundsLostForWeek = caloriesBurned / 3500;
+        updatedUser.weight = updatedUser.weight - (user.unitOfMeasure === IMPERIAL ? poundsLostForWeek : convertToKilograms(poundsLostForWeek));
+        weeks.push({
+            caloriesBurnedPerDay: (caloriesBurned / 7).toFixed(2),
+            weightAtEndOfWeek: +updatedUser.weight.toFixed(2),
+            weightLost: user.unitOfMeasure === IMPERIAL ? poundsLostForWeek.toFixed(2) : convertToKilograms(poundsLostForWeek).toFixed(2)
+        });
+    }
+
+    return {
+        weeks,
+        averageBmr: +(bmr / weeks.length).toFixed(2),
+        weightPerWeek: +((user.weight - updatedUser.weight) / weeks.length).toFixed(2),
+        caloriesBurnedPerDayExplanation: true
+    };
+};
+
+export const getWeight = (weight, user) => {
+    return user.unitOfMeasure === IMPERIAL ? convertToKilograms(weight) : weight;
+};
+
+export const getCaloriesBurned = (weight, duration, mets, user) => {
+    return (duration * (mets * 3.5 * getWeight(weight, user)) / 200).toFixed(2);
 };
 
 export const caloriesToBurn = (user, weightPerWeek) => {

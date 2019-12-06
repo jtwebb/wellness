@@ -2,7 +2,7 @@ import ActivityFactorComponent from '../activityFactor/activityFactor';
 import CalculatorComponent from './calculator';
 import React from 'react';
 import SidebarFormComponent from '../form/sidebarForm';
-import { byGoalDate, byPercentage, poundsPerWeek } from '../../utils/weightLossCalculators';
+import { byExercise, byGoalDate, byPercentage, poundsPerWeek } from '../../utils/weightLossCalculators';
 import { connect } from 'react-redux';
 import { IMPERIAL } from '../../redux/userReducer';
 import { Input, FormGroup, Label, Col, Container, Row } from 'reactstrap';
@@ -18,8 +18,6 @@ export class CalculatorsComponent extends React.PureComponent {
         this.state = {
             currentCalculator: params.get('c') || 'pounds'
         };
-
-        console.log(this.state);
     }
 
     changeCalculator = ({target}) => {
@@ -35,6 +33,8 @@ export class CalculatorsComponent extends React.PureComponent {
                 return byPercentage(this.props);
             case 'goalDate':
                 return byGoalDate(this.props);
+            case 'exercise':
+                return byExercise(this.props);
             case 'pounds':
             default:
                 return poundsPerWeek(this.props);
@@ -52,6 +52,7 @@ export class CalculatorsComponent extends React.PureComponent {
                                 <option value={`pounds`}>{this.props.unitOfMeasure === IMPERIAL ? 'Pounds' : 'Kilograms'} Per Week</option>
                                 <option value={`goalDate`}>Goal Date</option>
                                 <option value={`percentage`}>Percent Per Week</option>
+                                <option value={`exercise`}>Exercise</option>
                             </Input>
                         </FormGroup>
                         <ActivityFactorComponent/>
@@ -59,7 +60,8 @@ export class CalculatorsComponent extends React.PureComponent {
                             currentOpen: false,
                             showpercentLossPerWeek: this.state.currentCalculator === 'percentage',
                             showgoalDate: this.state.currentCalculator === 'goalDate',
-                            showfatLossPerWeek: this.state.currentCalculator === 'pounds'
+                            showfatLossPerWeek: this.state.currentCalculator === 'pounds',
+                            showexercise: this.state.currentCalculator === 'exercise'
                         }}/>
                     </Col>
                     <Col md={9} lg={10}>
@@ -95,7 +97,8 @@ const mapStateToProps = (state) => {
         percentLossPerWeek: state.user.percentLossPerWeek,
         preferredCalculator: state.user.preferredCalculator,
         unitOfMeasure: state.user.unitOfMeasure,
-        weight: state.user.weight
+        weight: state.user.weight,
+        workouts: state.user.workouts
     };
 };
 
