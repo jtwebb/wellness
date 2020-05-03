@@ -33,6 +33,9 @@ export default class HeaderComponent extends React.PureComponent {
                         <NavItem>
                             <NavLink to={`/profile`} className={`nav-link`} activeClassName={`active`}>Profile</NavLink>
                         </NavItem>
+                        <NavItem>
+                            <NavLink to={`/disclaimer`} className={`nav-link`} activeClassName={`active`}>Disclaimer</NavLink>
+                        </NavItem>
                     </Nav>
                 </Collapse>
             </Navbar>

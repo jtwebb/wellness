@@ -5,6 +5,7 @@ import Header from '../header/header';
 import Bmr from '../bmr/bmr';
 import Calculators from '../calculators/calculators';
 import Activity from '../activity/activity';
+import Disclaimer from './disclaimer';
 
 export default class App extends Component {
     render() {
@@ -16,6 +17,7 @@ export default class App extends Component {
                     <Route path={`/calculators`} exact component={Calculators}/>
                     <Route path={`/activity`} exact component={Activity}/>
                     <Route path={`/profile`} exact component={Profile}/>
+                    <Route path={`/disclaimer`} exact component={Disclaimer}/>
                 </div>
             </Router>
         );

@@ -25,18 +25,26 @@ export class ActivityComponent extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        this.props.getActivities(this.props.activities);
+        if (this.props.activities && this.props.activities.length) {
+            this.setStatelValues();
+        } else {
+            this.props.getActivities(this.props.activities);
+        }
     };
 
     componentDidUpdate = (prevProps, prevState) => {
         if (this.props.activities && (prevProps.activities !== this.props.activities || prevProps.categories !== this.props.categories)) {
-            this.activities = this.props.activities;
-            this.setState({
-                categories: this.props.categories,
-                activities: this.props.activities.sort(this.sortActivities),
-                currentActivity: this.props.activities[0]
-            });
+            this.setStatelValues();
         }
+    };
+
+    setStatelValues = () => {
+        this.activities = this.props.activities;
+        this.setState({
+            categories: this.props.categories,
+            activities: this.props.activities.sort(this.sortActivities),
+            currentActivity: this.props.activities[0]
+        });
     };
 
     sortActivities = (a, b) => {
