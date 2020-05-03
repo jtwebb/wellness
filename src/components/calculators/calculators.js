@@ -2,12 +2,13 @@ import ActivityFactorComponent from '../activityFactor/activityFactor';
 import CalculatorComponent from './calculator';
 import React from 'react';
 import SidebarFormComponent from '../form/sidebarForm';
-import { byExercise, byGoalDate, byPercentage, poundsPerWeek } from '../../utils/weightLossCalculators';
+import { byExercise, byGoalDate, byPercentage, poundsPerWeek, byAccuMeasure } from '../../utils/weightLossCalculators';
 import { connect } from 'react-redux';
 import { IMPERIAL } from '../../redux/userReducer';
 import { Input, FormGroup, Label, Col, Container, Row } from 'reactstrap';
 
 import './calculators.scss';
+import AccuMeasureComponent from './accuMeasure';
 
 export class CalculatorsComponent extends React.PureComponent {
     constructor(props) {
@@ -35,6 +36,8 @@ export class CalculatorsComponent extends React.PureComponent {
                 return byGoalDate(this.props);
             case 'exercise':
                 return byExercise(this.props);
+            case 'accumeasure':
+                return byAccuMeasure(this.props);
             case 'pounds':
             default:
                 return poundsPerWeek(this.props);
@@ -53,6 +56,7 @@ export class CalculatorsComponent extends React.PureComponent {
                                 <option value={`goalDate`}>Goal Date</option>
                                 <option value={`percentage`}>Percent Per Week</option>
                                 <option value={`exercise`}>Exercise</option>
+                                <option value={`accumeasure`}>AccuMeasure</option>
                             </Input>
                         </FormGroup>
                         <ActivityFactorComponent/>
@@ -61,15 +65,25 @@ export class CalculatorsComponent extends React.PureComponent {
                             showpercentLossPerWeek: this.state.currentCalculator === 'percentage',
                             showgoalDate: this.state.currentCalculator === 'goalDate',
                             showfatLossPerWeek: this.state.currentCalculator === 'pounds',
-                            showexercise: this.state.currentCalculator === 'exercise'
+                            showexercise: this.state.currentCalculator === 'exercise',
+                            showaccumeasure: this.state.currentCalculator === 'accumeasure'
                         }}/>
                     </Col>
                     <Col md={9} lg={10}>
                         {
-                            <CalculatorComponent
+                            this.state.currentCalculator !== 'accumeasure' && <CalculatorComponent
                                 calculatorResults={this.getResults()}
                                 idealWeight={this.props.idealWeight}
                                 unitOfMeasure={this.props.unitOfMeasure}
+                            />
+                        }
+                        {
+                            this.state.currentCalculator === 'accumeasure' && <AccuMeasureComponent
+                              gender={this.props.gender}
+                              age={this.props.age}
+                              idealBodyFatPercentage={this.props.idealBodyFatPercentage}
+                              weight={this.props.weight}
+                              unitOfMeasure={this.props.unitOfMeasure}
                             />
                         }
                     </Col>

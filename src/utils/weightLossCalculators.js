@@ -1,6 +1,7 @@
 import { getAll } from './bmrCalculators';
 import { IMPERIAL, SEDENTARY } from '../redux/userReducer';
 import { convertToKilograms, convertToPounds } from './conversion';
+import accuMeasureData from '../components/calculators/accuMeasureData';
 
 export const poundsPerWeek = (user) => {
     if (!user.weight || !user.idealWeight || !user.fatLossPerWeek) {
@@ -104,8 +105,12 @@ export const byExercise = (user) => {
     const weeks = [];
     let bmr = 0;
     let updatedUser = {...user};
+    let poundsLostForWeek = 1;
 
     while (updatedUser.weight > user.idealWeight) {
+        if (poundsLostForWeek < 0.1) {
+            break;
+        }
         const currentBmr = getAll(updatedUser)[user.preferredCalculator];
         bmr += currentBmr[SEDENTARY].value;
         let caloriesBurned = 0;
@@ -115,7 +120,7 @@ export const byExercise = (user) => {
             }, 0)
         });
         caloriesBurned += (currentBmr[SEDENTARY].value * 7) - (user.lowestCalorieIntake * 7);
-        const poundsLostForWeek = caloriesBurned / 3500;
+        poundsLostForWeek = caloriesBurned / 3500;
         updatedUser.weight = updatedUser.weight - (user.unitOfMeasure === IMPERIAL ? poundsLostForWeek : convertToKilograms(poundsLostForWeek));
         weeks.push({
             caloriesBurnedPerDay: (caloriesBurned / 7).toFixed(2),
@@ -130,6 +135,28 @@ export const byExercise = (user) => {
         weightPerWeek: +((user.weight - updatedUser.weight) / weeks.length).toFixed(2),
         caloriesBurnedPerDayExplanation: true
     };
+};
+
+export const byAccuMeasure = (user, measurement = 0) => {
+    if (!user.age || !user.gender) {
+        return false;
+    }
+
+    const adjustedMeasurement = measurement > 36 ? 36 : measurement < 2 ? 2 : measurement;
+    const adjustedAge = user.age > 150 ? 150 : user.age < 0 ? 0 : user.age;
+    const ageGroup = accuMeasureData[user.gender.toLowerCase()].find((group) => {
+        return group.maxAge >= adjustedAge && group.minAge <= adjustedAge;
+    });
+
+    if (!ageGroup) {
+        return 0;
+    }
+
+    if (measurement > 36) {
+        return ageGroup[36] + ((measurement - 36) * .25);
+    }
+
+    return ageGroup[adjustedMeasurement];
 };
 
 export const getWeight = (weight, user) => {
