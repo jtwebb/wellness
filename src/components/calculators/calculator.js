@@ -9,7 +9,7 @@ export default class CalculatorComponent extends React.PureComponent {
             return <Alert className={`no-data-error`} color={`danger`}>Please enter your data</Alert>;
         }
 
-        const date = moment(this.props.startDate || Date.now(), 'MM-DD-YYYY');
+        const date = this.props.startDate ? moment(this.props.startDate, 'YYYY-MM-DD') : moment(Date.now());
 
         return (
             <div className={`calculator-results`}>
