@@ -116,8 +116,9 @@ export const byExercise = (user) => {
         let caloriesBurned = 0;
         user.workouts.forEach((workout) => {
             caloriesBurned += workout.exercises.reduce((previous, current) => {
-                return previous + (+getCaloriesBurned(updatedUser.weight, current.duration, current.activity.mets, user));
-            }, 0)
+                const burned = previous + (+getCaloriesBurned(updatedUser.weight, current.duration, current.activity.mets, user));
+                return workout.title === 'Daily' ? (burned * 7) : burned;
+            }, 0);
         });
         caloriesBurned += (currentBmr[SEDENTARY].value * 7) - (user.lowestCalorieIntake * 7);
         poundsLostForWeek = caloriesBurned / 3500;

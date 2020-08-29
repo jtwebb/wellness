@@ -143,6 +143,7 @@ const mapStateToProps = (state) => {
         unitOfMeasure: state.user.unitOfMeasure,
         weight: state.user.weight,
         workouts: state.user.workouts || [
+            { title: 'Daily', exercises: [] },
             { title: 'Monday', exercises: [] },
             { title: 'Tuesday', exercises: [] },
             { title: 'Wednesday', exercises: [] },
