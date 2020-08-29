@@ -124,6 +124,11 @@ export const getForm = (unit) => {
                     step: .01
                 },
                 {
+                    display: 'Start Date',
+                    key: 'startDate',
+                    type: 'date'
+                },
+                {
                     display: 'Goal Date',
                     key: 'goalDate',
                     type: 'date'

@@ -37,6 +37,7 @@ export default createSlice({
         name: '',
         percentLossPerWeek: 1,
         preferredCalculator: AVERAGE,
+        startDate: moment(new Date()).format('MM-DD-YYYY'),
         unitOfMeasure: IMPERIAL,
         weight: 0,
         workouts: [
@@ -51,7 +52,7 @@ export default createSlice({
     },
     reducers: {
         updateUserProfile(state, action) {
-            const raw = isNaN(parseFloat(action.payload.value)) || action.payload.key === 'goalDate';
+            const raw = isNaN(parseFloat(action.payload.value)) || action.payload.key === 'goalDate' || action.payload.key === 'startDate';
             const newState = {...state, [action.payload.key]: raw ? action.payload.value : parseFloat(action.payload.value)};
             saveData(newState);
             return newState;

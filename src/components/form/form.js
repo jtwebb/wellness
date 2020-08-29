@@ -81,6 +81,7 @@ const mapStateToProps = (state) => {
         fatLossPerWeek: state.user.fatLossPerWeek,
         gender: state.user.gender,
         goalDate: state.user.goalDate,
+        startDate: state.user.startDate,
         height: state.user.height,
         idealBodyFatPercentage: state.user.idealBodyFatPercentage,
         idealWeight: state.user.idealWeight,

@@ -20,11 +20,11 @@ export default class AccuMeasureComponent extends React.PureComponent {
 
   calculateBodyFatPercentageDifference = (ideal, current) => {
     if (ideal < current) {
-      return <div>You need to lose <strong>${(current - ideal).toFixed(2)}%</strong> more body fat to reach your goal.</div>;
+      return <div>You need to lose <strong>{(current - ideal).toFixed(2)}%</strong> more body fat to reach your goal.</div>;
     }
 
     if (ideal > current) {
-      return <div>You are <strong>${(ideal - current).toFixed(2)}%</strong> past your goal!</div>;
+      return <div>You are <strong>{(ideal - current).toFixed(2)}%</strong> past your goal!</div>;
     }
 
     return <div>You are at your goal!</div>;

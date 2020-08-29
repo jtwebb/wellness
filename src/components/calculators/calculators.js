@@ -48,7 +48,7 @@ export class CalculatorsComponent extends React.PureComponent {
         return (
             <Container fluid className={`calculators-page`}>
                 <Row>
-                    <Col md={3} lg={2}>
+                    <Col md={3} lg={2} className={`sidebar`}>
                         <FormGroup>
                             <Label>Calculator</Label>
                             <Input className={`calculator-selector`} defaultValue={this.state.currentCalculator} type={`select`} onChange={this.changeCalculator}>
@@ -62,6 +62,7 @@ export class CalculatorsComponent extends React.PureComponent {
                         <ActivityFactorComponent/>
                         <SidebarFormComponent goal={{
                             currentOpen: false,
+                            showstartDate: true,
                             showpercentLossPerWeek: this.state.currentCalculator === 'percentage',
                             showgoalDate: this.state.currentCalculator === 'goalDate',
                             showfatLossPerWeek: this.state.currentCalculator === 'pounds',
@@ -75,6 +76,7 @@ export class CalculatorsComponent extends React.PureComponent {
                                 calculatorResults={this.getResults()}
                                 idealWeight={this.props.idealWeight}
                                 unitOfMeasure={this.props.unitOfMeasure}
+                                startDate={this.props.startDate}
                             />
                         }
                         {
@@ -84,6 +86,7 @@ export class CalculatorsComponent extends React.PureComponent {
                               idealBodyFatPercentage={this.props.idealBodyFatPercentage}
                               weight={this.props.weight}
                               unitOfMeasure={this.props.unitOfMeasure}
+                              startDate={this.props.startDate}
                             />
                         }
                     </Col>
@@ -103,6 +106,7 @@ const mapStateToProps = (state) => {
         fatLossPerWeek: state.user.fatLossPerWeek,
         gender: state.user.gender,
         goalDate: state.user.goalDate,
+        startDate: state.user.startDate,
         height: state.user.height,
         idealBodyFatPercentage: state.user.idealBodyFatPercentage,
         idealWeight: state.user.idealWeight,

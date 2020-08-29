@@ -9,13 +9,15 @@ export default class CalculatorComponent extends React.PureComponent {
             return <Alert className={`no-data-error`} color={`danger`}>Please enter your data</Alert>;
         }
 
-        const date = moment(Date.now());
+        const date = moment(this.props.startDate || Date.now());
 
         return (
             <div className={`calculator-results`}>
                 <Card>
                     <CardBody>
                         <CardTitle>Summary</CardTitle>
+                        {this.props.startDate &&
+                        <CardText>You're start date is: {date.format('MM-DD-YYYY')}</CardText>}
                         <CardText>
                             It will take you <strong>{this.props.calculatorResults.weeks.length} weeks</strong>
                             &nbsp;to reach your goal of {this.props.idealWeight} {this.props.unitOfMeasure === IMPERIAL ? 'pounds' : 'kilograms'}.

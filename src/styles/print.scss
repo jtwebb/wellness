@@ -13,6 +13,10 @@
         max-width: 100%;
     }
 
+    .sidebar {
+        display: none;
+    }
+
     .activity-factor-definitions,
     .app-header {
         display: none;
@@ -38,5 +42,9 @@
 
     .group-goal {
         margin-bottom: 20px;
+    }
+
+    .calculator-results table td {
+        padding: .45rem;
     }
 }
