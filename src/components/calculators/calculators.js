@@ -6,9 +6,9 @@ import { byExercise, byGoalDate, byPercentage, poundsPerWeek, byAccuMeasure } fr
 import { connect } from 'react-redux';
 import { IMPERIAL } from '../../redux/userReducer';
 import { Input, FormGroup, Label, Col, Container, Row } from 'reactstrap';
+import AccuMeasureComponent from './accuMeasure';
 
 import './calculators.scss';
-import AccuMeasureComponent from './accuMeasure';
 
 export class CalculatorsComponent extends React.PureComponent {
     constructor(props) {
@@ -17,12 +17,13 @@ export class CalculatorsComponent extends React.PureComponent {
         const params = new URLSearchParams(window.location.search.replace('?', ''));
 
         this.state = {
-            currentCalculator: params.get('c') || 'pounds'
+            currentCalculator: params.get('c') || 'exercise'
         };
     }
 
     changeCalculator = ({target}) => {
         if (target.value !== this.state.currentCalculator) {
+            console.log(target.value, this.state.currentCalculator);
             this.setState({currentCalculator: target.value});
             window.history.replaceState({}, '', `?c=${target.value}`);
         }
@@ -34,13 +35,13 @@ export class CalculatorsComponent extends React.PureComponent {
                 return byPercentage(this.props);
             case 'goalDate':
                 return byGoalDate(this.props);
-            case 'exercise':
-                return byExercise(this.props);
             case 'accumeasure':
                 return byAccuMeasure(this.props);
             case 'pounds':
-            default:
                 return poundsPerWeek(this.props);
+            case 'exercise':
+            default:
+                return byExercise(this.props);
         }
     };
 
@@ -103,6 +104,7 @@ const mapStateToProps = (state) => {
         age: state.user.age,
         bodyFatPercentage: state.user.bodyFatPercentage,
         email: state.user.email,
+        exercises: state.user.exercises,
         fatLossPerWeek: state.user.fatLossPerWeek,
         gender: state.user.gender,
         goalDate: state.user.goalDate,
@@ -115,8 +117,7 @@ const mapStateToProps = (state) => {
         percentLossPerWeek: state.user.percentLossPerWeek,
         preferredCalculator: state.user.preferredCalculator,
         unitOfMeasure: state.user.unitOfMeasure,
-        weight: state.user.weight,
-        workouts: state.user.workouts
+        weight: state.user.weight
     };
 };
 

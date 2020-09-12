@@ -42,9 +42,13 @@ export class ExerciseForm extends React.PureComponent {
                         value={this.state.currentActivity}
                     />
                 </Col>
-                <Col md={4}>
+                <Col md={2}>
                     <Label>Duration (in minutes)</Label>
                     <Input type={`number`} value={this.props.duration || 0} onChange={(e) => this.props.onDurationChange(e.target.value)}/>
+                </Col>
+                <Col md={2}>
+                    <Label>Days Per Week</Label>
+                    <Input type={`number`} value={this.props.daysPerWeek || 1} min={1} max={7} onChange={(e) => this.props.onDaysPerWeekChange(e.target.value)}/>
                 </Col>
                 <Col md={2} className={`exercise-form-last-col`}>
                     <Button className={`exercise-form-remove-btn`} color={`danger`} onClick={this.props.onRemove}>Remove</Button>

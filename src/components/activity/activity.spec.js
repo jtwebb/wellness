@@ -7,7 +7,8 @@ let props;
 
 beforeEach(() => {
     props = {
-        unitOfMeasure: IMPERIAL
+        unitOfMeasure: IMPERIAL,
+        getActivities: jest.fn()
     };
 });
 

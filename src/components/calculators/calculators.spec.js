@@ -38,8 +38,9 @@ describe('Calculators', () => {
     it('should not change the calculator results if the calculator is the same', () => {
         const wrapper = shallow(<CalculatorsComponent {...props}/>);
         const selector = wrapper.find('.calculator-selector');
-        const poundSpy = jest.spyOn(calculators, 'poundsPerWeek');
-        selector.simulate('change', {target: {value: 'pounds'}});
+        selector.simulate('change', {target: {value: 'exercise'}});
+        const poundSpy = jest.spyOn(calculators, 'byExercise');
+        selector.simulate('change', {target: {value: 'exercise'}});
         expect(poundSpy).not.toHaveBeenCalled();
     });
 });

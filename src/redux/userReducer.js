@@ -27,6 +27,7 @@ export default createSlice({
         age: 0,
         bodyFatPercentage: 0,
         email: '',
+        exercises: [],
         fatLossPerWeek: 1,
         gender: MALE,
         goalDate: moment(new Date()).format('YYYY-MM-DD'),
@@ -39,23 +40,13 @@ export default createSlice({
         preferredCalculator: AVERAGE,
         startDate: moment(new Date()).format('YYYY-MM-DD'),
         unitOfMeasure: IMPERIAL,
-        weight: 0,
-        workouts: [
-            { title: 'Daily', exercises: [] },
-            { title: 'Monday', exercises: [] },
-            { title: 'Tuesday', exercises: [] },
-            { title: 'Wednesday', exercises: [] },
-            { title: 'Thursday', exercises: [] },
-            { title: 'Friday', exercises: [] },
-            { title: 'Saturday', exercises: [] },
-            { title: 'Sunday', exercises: [] }
-        ]
+        weight: 0
     },
     reducers: {
         updateUserProfile(state, action) {
             const raw = isNaN(parseFloat(action.payload.value)) || action.payload.key === 'goalDate' || action.payload.key === 'startDate';
             const newState = {...state, [action.payload.key]: raw ? action.payload.value : parseFloat(action.payload.value)};
-            
+
             saveData(newState);
 
             return newState;

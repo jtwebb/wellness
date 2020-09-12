@@ -8,7 +8,9 @@ beforeEach(() => {
     props = {
         bodyFatPercentage: 20,
         weight: 200,
-        idealBodyFatPercentage: 15
+        idealBodyFatPercentage: 15,
+        exercises: [],
+        getActivities: jest.fn()
     };
 });
 

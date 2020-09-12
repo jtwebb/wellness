@@ -4,34 +4,26 @@ import { Button, Col, Container, Row } from 'reactstrap';
 import { connect } from 'react-redux';
 import WeightSuggestionComponent from '../weightSuggestion/weightSuggestion';
 import ExerciseForm from '../form/exerciseForm';
-
-import './profile.scss';
 import userReducer from '../../redux/userReducer';
 import { fetchActivities } from '../../redux/activityReducer';
+
+import './profile.scss';
 
 export class ProfileComponent extends React.PureComponent {
     componentDidMount = () => {
         this.props.getActivities(this.props.activities);
     };
 
-    onAdd = (workout, index) => {
-        const workouts = [...this.props.workouts];
-        workout = {...workout};
-        const exercises = [...workout.exercises];
-        exercises.push({activity: this.props.activities[0], duration: 0});
-        workout.exercises = exercises;
-        workouts[index] = workout;
-        this.props.updateUserProfile('workouts', workouts);
+    onAdd = () => {
+        const exercises = [...this.props.exercises];
+        exercises.push({activity: this.props.activities[0], duration: 0, daysPerWeek: 1});
+        this.props.updateUserProfile('exercises', exercises);
     };
 
-    onRemove = (workout, index, exerciseIndex) => {
-        const workouts = [...this.props.workouts];
-        workout = {...workout};
-        const exercises = [...workout.exercises];
-        exercises.splice(exerciseIndex, 1);
-        workout.exercises = exercises;
-        workouts[index] = workout;
-        this.props.updateUserProfile('workouts', workouts);
+    onRemove = (index) => {
+        const exercises = [...this.props.exercises];
+        exercises.splice(index, 1);
+        this.props.updateUserProfile('exercises', exercises);
     };
 
     onDurationChange = (workout, index, exerciseIndex, value) => {
@@ -46,16 +38,12 @@ export class ProfileComponent extends React.PureComponent {
         this.props.updateUserProfile('workouts', workouts);
     };
 
-    onActivityChange = (workout, index, exerciseIndex, value) => {
-        const workouts = [...this.props.workouts];
-        workout = {...workout};
-        const exercises = [...workout.exercises];
-        const exercise = {...exercises[exerciseIndex]};
-        exercise.activity = value;
-        exercises[exerciseIndex] = exercise;
-        workout.exercises = exercises;
-        workouts[index] = workout;
-        this.props.updateUserProfile('workouts', workouts);
+    onChange = (exercise, index, propName, value) => {
+        const exercises = [...this.props.exercises];
+        const currentExercise = {...exercises[index]};
+        currentExercise[propName] = value;
+        exercises[index] = currentExercise;
+        this.props.updateUserProfile('exercises', exercises);
     };
 
     render() {
@@ -86,36 +74,32 @@ export class ProfileComponent extends React.PureComponent {
                             <h3>Weekly Exercise Schedule</h3>
                         </Col>
                     </Row>
-                    {this.props.workouts.map((workout, i) => {
+                    <Row>
+                        <Col>
+                            <h5>Exercises</h5>
+                        </Col>
+                    </Row>
+                    {this.props.exercises.map((exercise, i) => {
                         return (
-                            <Fragment key={'workout_fragment' + i}>
-                                <Row>
-                                    <Col>
-                                        <h5>{workout.title}</h5>
-                                    </Col>
-                                </Row>
-                                {workout.exercises.map((exercise, j) => {
-                                    return (
-                                        <ExerciseForm
-                                            duration={exercise.duration}
-                                            activity={exercise.activity}
-                                            key={'exercise_form' + j}
-                                            onRemove={this.onRemove.bind(this, workout, i, j)}
-                                            onDurationChange={this.onDurationChange.bind(this, workout, i, j)}
-                                            onActivityChange={this.onActivityChange.bind(this, workout, i, j)}
-                                        />
-                                    );
-                                })}
-                                <Row className={`exercise-add-row`}>
-                                    <Col>
-                                        <Button color={'success'} onClick={this.onAdd.bind(this, workout, i)}>
-                                            Add
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </Fragment>
+                          <ExerciseForm
+                            duration={exercise.duration}
+                            activity={exercise.activity}
+                            daysPerWeek={exercise.daysPerWeek}
+                            key={'exercise_form' + i}
+                            onRemove={this.onRemove.bind(this, i)}
+                            onDurationChange={this.onChange.bind(this, exercise, i, 'duration')}
+                            onActivityChange={this.onChange.bind(this, exercise, i, 'activity')}
+                            onDaysPerWeekChange={this.onChange.bind(this, exercise, i, 'daysPerWeek')}
+                          />
                         );
                     })}
+                    <Row className={`exercise-add-row`}>
+                        <Col>
+                            <Button color={'success'} onClick={this.onAdd}>
+                                Add
+                            </Button>
+                        </Col>
+                    </Row>
                 </Container>
             </Fragment>
         );
@@ -130,6 +114,7 @@ const mapStateToProps = (state) => {
         age: state.user.age,
         bodyFatPercentage: state.user.bodyFatPercentage,
         email: state.user.email,
+        exercises: state.user.exercises || [],
         fatLossPerWeek: state.user.fatLossPerWeek,
         gender: state.user.gender,
         goalDate: state.user.goalDate,
@@ -141,17 +126,7 @@ const mapStateToProps = (state) => {
         percentLossPerWeek: state.user.percentLossPerWeek,
         preferredCalculator: state.user.preferredCalculator,
         unitOfMeasure: state.user.unitOfMeasure,
-        weight: state.user.weight,
-        workouts: state.user.workouts || [
-            { title: 'Daily', exercises: [] },
-            { title: 'Monday', exercises: [] },
-            { title: 'Tuesday', exercises: [] },
-            { title: 'Wednesday', exercises: [] },
-            { title: 'Thursday', exercises: [] },
-            { title: 'Friday', exercises: [] },
-            { title: 'Saturday', exercises: [] },
-            { title: 'Sunday', exercises: [] }
-        ]
+        weight: state.user.weight
     };
 };
 

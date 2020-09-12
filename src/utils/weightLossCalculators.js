@@ -113,13 +113,9 @@ export const byExercise = (user) => {
         }
         const currentBmr = getAll(updatedUser)[user.preferredCalculator];
         bmr += currentBmr[SEDENTARY].value;
-        let caloriesBurned = 0;
-        user.workouts.forEach((workout) => {
-            caloriesBurned += workout.exercises.reduce((previous, current) => {
-                const burned = previous + (+getCaloriesBurned(updatedUser.weight, current.duration, current.activity.mets, user));
-                return workout.title === 'Daily' ? (burned * 7) : burned;
-            }, 0);
-        });
+        let caloriesBurned = user.exercises.reduce((previous, current) => {
+            return (previous + (+getCaloriesBurned(updatedUser.weight, current.duration, current.activity.mets, user))) * current.daysPerWeek;
+        }, 0);
         caloriesBurned += (currentBmr[SEDENTARY].value * 7) - (user.lowestCalorieIntake * 7);
         poundsLostForWeek = caloriesBurned / 3500;
         updatedUser.weight = updatedUser.weight - (user.unitOfMeasure === IMPERIAL ? poundsLostForWeek : convertToKilograms(poundsLostForWeek));

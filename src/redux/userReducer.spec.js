@@ -9,9 +9,10 @@ describe('User Reducer', () => {
             age: 0,
             bodyFatPercentage: 0,
             email: '',
+            exercises: [],
             fatLossPerWeek: 1,
             gender: MALE,
-            goalDate: moment(new Date()).format('MM-DD-YYYY'),
+            goalDate: moment(new Date()).format('YYYY-MM-DD'),
             height: 0,
             idealBodyFatPercentage: 0,
             idealWeight: 0,
@@ -19,6 +20,7 @@ describe('User Reducer', () => {
             name: '',
             percentLossPerWeek: 1,
             preferredCalculator: AVERAGE,
+            startDate: moment(new Date()).format('YYYY-MM-DD'),
             unitOfMeasure: IMPERIAL,
             weight: 0
         });
