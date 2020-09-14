@@ -10,17 +10,20 @@ export default class CalculatorComponent extends React.PureComponent {
         }
 
         const date = this.props.startDate ? moment(this.props.startDate, 'YYYY-MM-DD') : moment(Date.now());
+        const endDate = moment(date).add(this.props.calculatorResults.weeks.length, 'w').format('MM-DD-YYYY');
 
         return (
             <div className={`calculator-results`}>
                 <Card>
                     <CardBody>
-                        <CardTitle>Summary</CardTitle>
+                        <CardTitle><strong>Summary</strong></CardTitle>
                         {this.props.startDate &&
-                        <CardText>You're start date is: {date.format('MM-DD-YYYY')}</CardText>}
+                        <CardText>Your start date is: <strong>{date.format('MM-DD-YYYY')}</strong></CardText>}
+                        <CardText>Your end date is: <strong>{endDate}</strong></CardText>
                         <CardText>
                             It will take you <strong>{this.props.calculatorResults.weeks.length} weeks</strong>
                             &nbsp;to reach your goal of {this.props.idealWeight} {this.props.unitOfMeasure === IMPERIAL ? 'pounds' : 'kilograms'}.
+                            &nbsp;({this.props.calculatorResults.weeks.length * 7} days)
                         </CardText>
                         {this.props.calculatorResults.averageBmr &&
                         <CardText>
