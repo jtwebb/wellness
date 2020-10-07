@@ -26,6 +26,17 @@ export class ProfileComponent extends React.PureComponent {
         this.props.updateUserProfile('exercises', exercises);
     };
 
+    onCopy = (index) => {
+        if (index === -1 || index >= this.props.exercises.length) {
+            return;
+        }
+
+        const exercises = [...this.props.exercises];
+        const copiedExercise = {...exercises[index]};
+        exercises.splice(index + 1, 0, copiedExercise);
+        this.props.updateUserProfile('exercises', exercises);
+    };
+
     onDurationChange = (workout, index, exerciseIndex, value) => {
         const workouts = [...this.props.workouts];
         workout = {...workout};
@@ -87,6 +98,7 @@ export class ProfileComponent extends React.PureComponent {
                             daysPerWeek={exercise.daysPerWeek}
                             key={'exercise_form' + i}
                             onRemove={this.onRemove.bind(this, i)}
+                            onCopy={this.onCopy.bind(this, i)}
                             onDurationChange={this.onChange.bind(this, exercise, i, 'duration')}
                             onActivityChange={this.onChange.bind(this, exercise, i, 'activity')}
                             onDaysPerWeekChange={this.onChange.bind(this, exercise, i, 'daysPerWeek')}

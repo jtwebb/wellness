@@ -37,7 +37,11 @@ export class FormComponent extends React.PureComponent {
             <FormGroup key={key}>
                 <Label for={key}>{display}</Label>
                 <Input onChange={this.updateUser.bind(this, key)} type={type} name={key} id={key} defaultValue={this.props[key]} {...props}>
-                    {options.map((option) => {
+                    {options
+                      .filter((option) => {
+                          return option.dependantOn ? !!this.props[option.dependantOn] : true;
+                      })
+                      .map((option) => {
                         return <option key={option.value} value={option.value}>{option.display}</option>;
                     })}
                 </Input>

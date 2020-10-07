@@ -58,7 +58,7 @@ export default class CalculatorComponent extends React.PureComponent {
                             <th>Week Of</th>
                             {this.props.calculatorResults.weeks[0].caloriesToBurn && <th>Still Need To Burn</th>}
                             {this.props.calculatorResults.weeks[0].caloriesBurnedPerDay && <th>Calories Burned Per Day</th>}
-                            <th>Weight at End of Week</th>
+                            <th>Weight at Start of Week</th>
                             {this.props.calculatorResults.weeks[0].weightLost && <th>Weight Lost</th>}
                         </tr>
                     </thead>
@@ -68,7 +68,7 @@ export default class CalculatorComponent extends React.PureComponent {
                                 <tr key={i}>
                                     <td>{date.add(1, 'w').format('MM-DD-YYYY')}</td>
                                     {week.caloriesToBurn && <td>{week.caloriesToBurn.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>}
-                                    {week.caloriesBurnedPerDay && <td>{week.caloriesBurnedPerDay.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>}
+                                    {week.caloriesBurnedPerDay && <td>{week.caloriesBurnedPerDay.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}</td>}
                                     <td>{week.weightAtEndOfWeek.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                                     {week.weightLost && <td>{week.weightLost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>}
                                 </tr>

@@ -51,6 +51,7 @@ export class ExerciseForm extends React.PureComponent {
                     <Input type={`number`} value={this.props.daysPerWeek} min={1} max={7} onChange={(e) => this.props.onDaysPerWeekChange(e.target.value)}/>
                 </Col>
                 <Col md={2} className={`exercise-form-last-col`}>
+                    <Button className={`exercise-form-copy-btn`} color={`primary`} onClick={this.props.onCopy}>Copy</Button>
                     <Button className={`exercise-form-remove-btn`} color={`danger`} onClick={this.props.onRemove}>Remove</Button>
                 </Col>
             </Row>

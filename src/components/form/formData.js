@@ -141,8 +141,8 @@ export const getForm = (unit) => {
                         {value: AVERAGE, display: 'Averages'},
                         {value: HARRIS_BENEDICT, display: 'Revised Harris Benedict Equation'},
                         {value: MIFFLIN_ST_JEOR, display: 'Mifflin-St Jeor Equation'},
-                        {value: KATCH_MCARDLE, display: 'Katch-McArdle'},
-                        {value: CUNNINGHAM, display: 'Cunningham'}
+                        {value: KATCH_MCARDLE, display: 'Katch-McArdle', dependantOn: 'bodyFatPercentage'},
+                        {value: CUNNINGHAM, display: 'Cunningham', dependantOn: 'bodyFatPercentage'}
                     ]
                 }
             ]
