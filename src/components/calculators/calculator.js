@@ -4,6 +4,18 @@ import { IMPERIAL } from '../../redux/userReducer';
 import moment from 'moment';
 
 export default class CalculatorComponent extends React.PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            exercisesInformationIsOpen: true
+        };
+    }
+
+    onExercisesInformationToggle = () => {
+        this.setState({exercisesInformationIsOpen: !this.state.exercisesInformationIsOpen});
+    };
+
     render() {
         if (!this.props.calculatorResults || !this.props.calculatorResults.weeks || !this.props.calculatorResults.weeks.length) {
             return <Alert className={`no-data-error`} color={`danger`}>Please enter your data</Alert>;
@@ -68,7 +80,7 @@ export default class CalculatorComponent extends React.PureComponent {
                                 <tr key={i}>
                                     <td>{date.add(1, 'w').format('MM-DD-YYYY')}</td>
                                     {week.caloriesToBurn && <td>{week.caloriesToBurn.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>}
-                                    {week.caloriesBurnedPerDay && <td>{week.caloriesBurnedPerDay.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')}</td>}
+                                    {week.caloriesBurnedPerDay && <td>{week.caloriesBurnedPerDay}</td>}
                                     <td>{week.weightAtEndOfWeek.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                                     {week.weightLost && <td>{week.weightLost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>}
                                 </tr>

@@ -26,6 +26,7 @@ export default createSlice({
         activityFactor: SEDENTARY,
         age: 0,
         bodyFatPercentage: 0,
+        currentCalculator: 'exercise',
         email: '',
         exercises: [],
         fatLossPerWeek: 1,

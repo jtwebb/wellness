@@ -1,0 +1,24 @@
+.sidebar-exercises {
+    padding: 20px 0;
+
+    .exercise-form.row:after {
+        border-bottom: solid 1px #cecece;
+        content: '';
+        display: block;
+        height: 1px;
+        margin: 20px;
+        width: 100%;
+    }
+
+    .col-md-6,
+    .col-md-2 {
+        flex: 0 0 100%;
+        margin-bottom: 10px;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .exercise-form-copy-btn {
+        margin-right: 20px;
+    }
+}

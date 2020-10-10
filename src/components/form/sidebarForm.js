@@ -1,6 +1,9 @@
 import React from 'react';
 import { Button, Collapse } from 'reactstrap';
 import FormComponent from './form';
+import ExerciseForm from './exerciseForm';
+
+import './sidebar-form.scss';
 
 export default class SidebarFormComponent extends React.PureComponent {
     constructor(props) {
@@ -8,9 +11,14 @@ export default class SidebarFormComponent extends React.PureComponent {
 
         this.state = {
             currentInformationIsOpen: this.props.currentOpen === undefined ? true : this.props.currentOpen,
-            goalInformationIsOpen: this.props.goalOpen === undefined ? true : this.props.goalOpen
+            goalInformationIsOpen: this.props.goalOpen === undefined ? true : this.props.goalOpen,
+            exercisesInformationIsOpen: this.props.exerciseOpen === undefined ? true : this.props.exerciseOpen
         };
     }
+
+    onExercisesInformationToggle = () => {
+        this.setState({exercisesInformationIsOpen: !this.state.exercisesInformationIsOpen});
+    };
 
     onCurrentInformationToggle = () => {
         this.setState({currentInformationIsOpen: !this.state.currentInformationIsOpen});
@@ -18,6 +26,23 @@ export default class SidebarFormComponent extends React.PureComponent {
 
     onGoalInformationToggle = () => {
         this.setState({goalInformationIsOpen: !this.state.goalInformationIsOpen});
+    };
+
+    renderExercises = () => {
+        if (!this.props.showExercise) {
+            return null;
+        }
+
+        return (
+          <div>
+              <Button className={`exercises-toggle`} key={10} block color={`primary`} onClick={this.onExercisesInformationToggle}>Weekly Exercise Schedule</Button>
+              <Collapse key={11} isOpen={this.state.exercisesInformationIsOpen}>
+                  <div className="sidebar-exercises">
+                    <ExerciseForm/>
+                  </div>
+              </Collapse>
+          </div>
+        );
     };
 
     renderCurrent = () => {
@@ -71,6 +96,7 @@ export default class SidebarFormComponent extends React.PureComponent {
     render = () => {
         return (
             <div>
+                {this.renderExercises()}
                 {this.renderCurrent()}
                 {this.renderGoals()}
             </div>

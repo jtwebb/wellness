@@ -1,6 +1,6 @@
 import FormComponent from '../form/form';
 import React, { Fragment } from 'react';
-import { Button, Col, Container, Row } from 'reactstrap';
+import { Col, Container, Row } from 'reactstrap';
 import { connect } from 'react-redux';
 import WeightSuggestionComponent from '../weightSuggestion/weightSuggestion';
 import ExerciseForm from '../form/exerciseForm';
@@ -12,49 +12,6 @@ import './profile.scss';
 export class ProfileComponent extends React.PureComponent {
     componentDidMount = () => {
         this.props.getActivities(this.props.activities);
-    };
-
-    onAdd = () => {
-        const exercises = [...this.props.exercises];
-        exercises.push({activity: this.props.activities[0], duration: 0, daysPerWeek: 1});
-        this.props.updateUserProfile('exercises', exercises);
-    };
-
-    onRemove = (index) => {
-        const exercises = [...this.props.exercises];
-        exercises.splice(index, 1);
-        this.props.updateUserProfile('exercises', exercises);
-    };
-
-    onCopy = (index) => {
-        if (index === -1 || index >= this.props.exercises.length) {
-            return;
-        }
-
-        const exercises = [...this.props.exercises];
-        const copiedExercise = {...exercises[index]};
-        exercises.splice(index + 1, 0, copiedExercise);
-        this.props.updateUserProfile('exercises', exercises);
-    };
-
-    onDurationChange = (workout, index, exerciseIndex, value) => {
-        const workouts = [...this.props.workouts];
-        workout = {...workout};
-        const exercises = [...workout.exercises];
-        const exercise = {...exercises[exerciseIndex]};
-        exercise.duration = value;
-        exercises[exerciseIndex] = exercise;
-        workout.exercises = exercises;
-        workouts[index] = workout;
-        this.props.updateUserProfile('workouts', workouts);
-    };
-
-    onChange = (exercise, index, propName, value) => {
-        const exercises = [...this.props.exercises];
-        const currentExercise = {...exercises[index]};
-        currentExercise[propName] = value;
-        exercises[index] = currentExercise;
-        this.props.updateUserProfile('exercises', exercises);
     };
 
     render() {
@@ -85,33 +42,7 @@ export class ProfileComponent extends React.PureComponent {
                             <h3>Weekly Exercise Schedule</h3>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <h5>Exercises</h5>
-                        </Col>
-                    </Row>
-                    {this.props.exercises.map((exercise, i) => {
-                        return (
-                          <ExerciseForm
-                            duration={exercise.duration}
-                            activity={exercise.activity}
-                            daysPerWeek={exercise.daysPerWeek}
-                            key={'exercise_form' + i}
-                            onRemove={this.onRemove.bind(this, i)}
-                            onCopy={this.onCopy.bind(this, i)}
-                            onDurationChange={this.onChange.bind(this, exercise, i, 'duration')}
-                            onActivityChange={this.onChange.bind(this, exercise, i, 'activity')}
-                            onDaysPerWeekChange={this.onChange.bind(this, exercise, i, 'daysPerWeek')}
-                          />
-                        );
-                    })}
-                    <Row className={`exercise-add-row`}>
-                        <Col>
-                            <Button color={'success'} onClick={this.onAdd}>
-                                Add
-                            </Button>
-                        </Col>
-                    </Row>
+                    <ExerciseForm/>
                 </Container>
             </Fragment>
         );
